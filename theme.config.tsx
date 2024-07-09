@@ -14,9 +14,9 @@ const config: DocsThemeConfig = {
   footer: {
     text: (
       <span>
-        <a class="nx-text-primary-600 nx-underline" href="https://www.patreon.com/bePatron?u=74828821">Become a member on Patreon!</a>
+        <a className="nx-text-primary-600 nx-underline" href="https://www.patreon.com/bePatron?u=74828821">Become a member on Patreon!</a>
         <br/>- or -<br/>
-        <a class="nx-text-primary-600 nx-underline" href="https://www.paypal.com/donate/?hosted_button_id=XYQWYQ337TBP4">Donate via Paypal!</a>
+        <a className="nx-text-primary-600 nx-underline" href="https://www.paypal.com/donate/?hosted_button_id=XYQWYQ337TBP4">Donate via Paypal!</a>
       </span>
     ),
   },
