@@ -12,16 +12,23 @@ const config: DocsThemeConfig = {
   },
   docsRepositoryBase: 'https://github.com/Xjph/observatory-docs/tree/main',
   footer: {
-    text: '',
+    text: (
+      <span>
+        <a class="nx-text-primary-600 nx-underline" href="https://www.patreon.com/bePatron?u=74828821">Become a member on Patreon!</a>
+        <br/>- or -<br/>
+        <a class="nx-text-primary-600 nx-underline" href="https://www.paypal.com/donate/?hosted_button_id=XYQWYQ337TBP4">Donate via Paypal!</a>
+      </span>
+    ),
   },
   head: () => {
     const { frontMatter } = useConfig();
     return (
       <>
+        <title>{frontMatter.title || 'Observatory Docs'}</title>
         <meta property="og:title" content={frontMatter.title || 'Observatory Docs'} />
         <meta
           property="og:description"
-          content={frontMatter.description || 'Observatory Documentation Project'}
+          content={frontMatter.description || 'Observatory Project Documentation'}
         />
       </>
     )

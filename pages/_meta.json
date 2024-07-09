@@ -1,10 +1,11 @@
 {
   "index": "Elite Observatory",
-  "release": "Download/Releases",
+  "release": "Download",
   "usage": "Usage Guide",
   "notifications": "Notifications",
   "plugins": "Plugins",
   "overhaul": "Why a UI Overhaul?",
+  "donate": "Donations",
   "about": {
     "title": "About",
     "type": "page"
