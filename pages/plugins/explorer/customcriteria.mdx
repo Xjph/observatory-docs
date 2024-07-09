@@ -16,7 +16,7 @@ To get started creating criteria all you need to do is create a text file and se
 
 Simple criteria can be written as single-line expressions. Criteria in this category are typically straightforward tests of a value against a condition, //e.g.// "is this body landable with a surface temperature above 1500 K"? Here is one way that particular check could be written:
 
-```Lua
+```lua
 ---@Simple Hot Landable
 scan.Landable and scan.SurfaceTemperature > 1500
 ```
@@ -27,7 +27,7 @@ The second line is a true or false Lua expression which is evaluated for each sc
 
 Optionally the "Detail" column can be populated as well. If we want to include the specific temperature of the hot landable bodies found by the above criteria then it could be done like this:
 
-```Lua
+```lua
 ---@Simple Hot Landable
 scan.Landable and scan.SurfaceTemperature > 1500
 ---@Detail
@@ -44,7 +44,7 @@ For criteria which might be unwieldy to write out in a single line you can creat
 
 For example, if we want our hot landable check to only trigger if it's the moon of a ringed planet, then this is one approach:
 
-```Lua
+```lua
 ---@Complex
 if scan.Landable and scan.SurfaceTemperature > 1000 and parents then
   if parents[0].Scan and parents[0].ParentType == 'Planet' and parents[0].Scan.Rings then
@@ -65,7 +65,7 @@ If all of that passes then we return our successful results, which consists of t
 There are of course different ways to construct this exact same check, depending largely on personal preference.
 
 All in one `if`:
-```Lua
+```lua
 ---@Complex
 if scan.Landable and scan.SurfaceTemperature > 1000 and parents and parents[0].Scan and parents[0].ParentType == 'Planet' and parents[0].Scan.Rings then
   return true, 'Hot Landable Moon of Ringed Parent', 'Temperature: ' .. math.floor(scan.SurfaceTemperature) .. ' K'
@@ -74,7 +74,7 @@ end
 ```
 
 Evaluating `parent` details inside `return` statement:
-```Lua
+```lua
 ---@Complex
 if scan.Landable and scan.SurfaceTemperature > 1000 and parents then
   return 
@@ -86,7 +86,7 @@ end
 ```
 
 As a simple criteria:
-```Lua
+```lua
 ---@Simple Hot Landable Moon of Ringed Parent
 scan.Landable and scan.SurfaceTemperature > 1000 and parents and parents[0].Scan and parents[0].ParentType == 'Planet' and parents[0].Scan.Rings ~= nil
 ---@Detail
@@ -96,7 +96,7 @@ scan.Landable and scan.SurfaceTemperature > 1000 and parents and parents[0].Scan
 Note the change in how `parents[0].Scan.Rings` is checked in the last two examples. Since this is the final result being returned back to the .NET environment we can't count on Lua's "truthiness" to silently consider the existence of the `Rings` object to be `true`.
 
 A multi-line criteria is a fully featured Lua function, and can use just about any feature of the Lua language. For example, variable declaration and `for` loops:
-```Lua
+```lua
 ---@Complex
 if scan.Landable and scan.AtmosphereComposition then
   local CO2 = 0
@@ -184,7 +184,7 @@ There are several collections available when creating criteria, as well as speci
 Keep in mind these are all zero-indexed. However there are iterators provided to simplify working with them. Member properties of the objects returned by iterators are not the original objects, and are not `CamelCased`.
 
 The `Materials` and `AtmosphereComposition` collections within the `scan` object are both similarly structured collections of materials, each of which contains a `Name` and `Percent` member property. They can be iterated on using the `materials` iterator which returns each item in the collection as a Lua table with named indices.
-```Lua
+```lua
 for material in materials(scan.Materials) do
   --Available in loop body:
   --material.name
@@ -200,7 +200,7 @@ The `scan.Rings` collection is a list of `Ring` objects, each of which has the f
   * `scan.Rings[n].OuterRad` (float): Orbital radius of outer edge of ring in metres.
 
 As with materials, there is a `rings` iterator to assist working with this collection:
-```Lua
+```lua
 for ring in rings(scan.Rings) do
   --Available in loop body:
   --ring.name
@@ -212,7 +212,7 @@ end
 ```
 
 The `system` collection is the set of all scan events previously seen in this system, each of which is a complete scan event with all of its original member properties, [as detailed above](#available-values). The `bodies` iterator will give you each individual scan.
-```Lua
+```lua
 for body in bodies(system) do
   --Available in loop body:
   --body.BodyName
@@ -229,7 +229,7 @@ Finally the `parents` object is a restructuring of the "Parents" journal propert
   * `Scan` (scan): Complete scan event of the parent object, if available.
 
 The `allparents` iterator is used for the `parents` collection.
-```Lua
+```lua
 for parent in allparents(parents) do
   --Available in loop body:
   --parent.parenttype
@@ -244,7 +244,7 @@ Another annotation which can be used in a criteria file is `---@Global`. Like th
 
 Any Lua script contained within a `---@Global` block is executed in advance of all processing and exists within the same global state as all subsequent criteria execution. This allows you to set global variables or define your own custom functions that can be used in your criteria. While not strictly necessary it is recommended that only a single `---@Global` block be used. For details on why, see the Under The Hood section.
 
-```Lua
+```lua
 ---@Global
 function systemHasAmmoniaWorld(system)
   for body in bodies(system) do
@@ -355,7 +355,7 @@ The very first step is that the initial Lua global state is created, some minor 
 
 The specific code of the iterators is as follows:
 
-```Lua
+```lua
 function materials (material_list)
   local i = 0
   local count = material_list.Count
@@ -409,7 +409,7 @@ Once the iterator functions are created criteria file reading starts. All direct
 
 `---@Complex` blocks are mostly left untouched, but are wrapped in the following function definition, where `n` is simply the line number of the file that the initial directive appeared on:
 
-```Lua
+```lua
 function Criteria{n} (scan, parents, system, biosignals, geosignals)
   --text inside ---@Complex block goes here
 end
@@ -417,7 +417,7 @@ end
 
 `---@Simple` criteria blocks use slightly more involved parsing to build a similar function, with the values read from the initial description directive, the criteria expression, and the detail expression (if present) filled in as follows:
 
-```Lua
+```lua
 function Criteria{n} (scan, parents, system, biosignals, geosignals)
   local result = {criteria expression here}
   local detail = {detail expression here}
