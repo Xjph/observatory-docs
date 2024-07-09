@@ -1,0 +1,30 @@
+# Botanist
+
+Botanist is a core [plugin](/plugins) for the Observatory, designed to provide simple output for biological signals.
+
+*Note: There is an optional plugin, [BioInsights](/plugins/thirdparty/bioinsights), that expands upon the capabilities of Botanist.*
+
+
+## Installation
+
+  * Botanist comes pre-installed with Observatory Core by default.
+  * If manual installation is required, create a 'plugins' folder in the same place as Observatory Core.exe. Add ObservatoryBotanist.dll to this folder.
+  * When starting Observatory, if successful, there should be a Botanist tab on the left.
+
+## Usage
+
+import Image from 'next/image'
+
+![An example of the Botanist plugin in use.](/botanist-example.png)
+*An example of the Botanist plugin in use.*
+
+Botanist divides its output into subsections: 
+
+  * **Body:** The name of the body on which the biological was found.
+  * **Bio Total:** The total amount of biological signals on a given body.
+  * **Species:** The type of biological signal scanned. Only scanned species will show up.
+    * If no samples for a given a planet are taken then (NO SAMPLES TAKEN) will be displayed instead.
+  * **Analysed:** Displays whether the signal has been analysed or not.
+  * **Colony Distance:** Displays the clonal colony range of the signal as per the Codex.
+
+

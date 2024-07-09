@@ -1,0 +1,38 @@
+# UI Overhaul
+
+The long awaited UI Overhaul and new version of Observatory! There's a lot to cover here, but first there's something important to get out of the way:
+
+**THIS IS A TESTING RELEASE AND NOT GUARANTEED TO BE STABLE OR FULLY POLISHED**
+
+Please do report issues you find. You can report via our [Discord](https://discord.gg/RAFDHsY), the [Frontier Forums thread](https://forums.frontier.co.uk/threads/elite-observatory-search-your-journal-for-potentially-interesting-objects-or-notify-you-of-new-ones-on-the-fly-while-exploring.521544/), or on [github](https://github.com/Xjph/ObservatoryCore/issues). The entire point of this release is to solicit feedback, and be aware that some issues are expected. If you want a smooth and error-free experience this release is probably not for you.
+
+As ever, it is offered as both an installer, and as a portable version. Notably, the portable version is now actually portable and keeps all of its configuration contained within its own folder.
+
+So what are the big changes?
+
+### Good-bye Avalonia
+The primary impetus for this overhaul was my own frustration with using Avalonia. Perhaps jumping all the way back to WinForms was an over-correction, but I remain much more comfortable in that environment than anything more "modern" which almost certainly means using models and views with my code one of more layers of separation from my UI. Am I some kind of old weird dinosaur for //not// wanting that separation and preferring all my UI elements to be directly represented by objects in the code? Maybe. But I am what I am.
+
+This improved familiarity manifests in a few ways that should be visible to users:
+
+  * Plugins are no longer limited to simple grid views and can provide their own full UIs. Expect new plugins using this to start appearing right on the heels of this release.
+  * Grid columns are now sortable
+  * We finally have themes
+
+### Actually Portable Version
+Unrelated to the UI change, but the "portable" version is now actually portable, and keeps all its config and plugin data alongside the Observatory exe file, wherever it may be.
+
+### Custom Criteria Syntax Tweaking
+Custom criteria now use Lua-compliant `---@` style annotations. This will allow custom criteria `.lua` files to play nicer with Lua IDEs. The original `::Label::` style directives still work, but their use is now considered deprecated. Custom criteria documentation will be updated to reflect this soon.
+
+### Nicer Read-All
+Read-all now has a progress bar and doesn't hard-lock the entire application while it's happening.
+
+### Notification Overrides
+Plugins can now suppress the native notifications if they replace that functionality. No more having native voice and Herald trying to yell over each other!
+
+### Code Signing
+Observatory is now a signed executable, and checks its signature against that of plugins it's loading. If that signature doesn't match you get a //one time// alert for that plugin that it's from a source other than myself. This is mostly just to ease my own mind and provide some degree of warning when running code from another source, as arbitrarily loading .dll files is a huge vector for malware. You're already implicitly trusting me by running Observatory, and this is just a reminder that an unsigned plugin means trusting someone else.
+
+### Donations
+Finally, I've changed the baked in donation link to offer options of both PayPal and Patreon. [Yes, I have a Patreon now.](https://www.patreon.com/vithigar) The PayPal link has also been updated to a newer one which by default waives fees.

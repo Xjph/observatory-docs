@@ -1,0 +1,492 @@
+# Custom Criteria
+
+Custom criteria are a powerful feature of Observatory's Explorer plugin which allows users to create and share their own criteria for what is flagged as interesting and notifies the player.
+
+## The Scripting Language
+
+Custom Criteria are written in [Lua](https://www.lua.org/about.html), and should be easy to pick up for anyone with a modicum of scripting experience. Explorer's Lua execution is handled by the [NLua](https://github.com/NLua/NLua) library, and includes a handful of annotations and functions specific to Observatory Explorer.
+
+One subtle "gotcha" for those who might be already familiar with Lua is that several of the objects passed into the Lua scripts from Explorer are *.NET collections* rather than Lua tables, and as such are *zero-indexed userdata objects*, in contrast to the more common one-indexing in Lua. This also means that Lua's truthiness rules might not apply in all situations (though generally should). Such objects will also use upper `CamelCase` for their member properties, rather than the more typical `snake_case` convention of Lua.
+
+## The Criteria File
+
+To get started creating criteria all you need to do is create a text file and select it as your custom criteria file in your Explorer settings. A `.lua` extension is preferable (many editors support syntax highlighting for `.lua` files), but not strictly necessary.
+
+## Simple Criteria
+
+Simple criteria can be written as single-line expressions. Criteria in this category are typically straightforward tests of a value against a condition, //e.g.// "is this body landable with a surface temperature above 1500 K"? Here is one way that particular check could be written:
+
+```Lua
+---@Simple Hot Landable
+scan.Landable and scan.SurfaceTemperature > 1500
+```
+
+The first line (`---@Simple Hot Landable`) tells Explorer that this is a simple one-line criteria, and what text to put in the "Description" column when this criteria is found. You can put any text you want here.
+
+The second line is a true or false Lua expression which is evaluated for each scan received. `scan` in this context is the scan event read from the Elite Dangerous player journal, and contains all the properties that can be found there and is detailed below.
+
+Optionally the "Detail" column can be populated as well. If we want to include the specific temperature of the hot landable bodies found by the above criteria then it could be done like this:
+
+```Lua
+---@Simple Hot Landable
+scan.Landable and scan.SurfaceTemperature > 1500
+---@Detail
+'Temperature: ' .. math.floor(scan.SurfaceTemperature) .. ' K'
+```
+
+A `---@Detail` annotation on the line //immediately following// a simple criteria expression indicates that the next line will be a string valued expression which is to be displayed in the "Detail" column.
+
+The string expression itself is a single-line Lua expression which must result in a single string. In this example we use Lua's *concatenation operator*, `..`, to build more presentable output than just tossing the temperature value there by itself. We also use `math.floor`, a function from [Lua's built-in `math` library](http://lua-users.org/wiki/MathLibraryTutorial), to remove unnecessary decimal places from the original journal values. If more control over how numbers are displayed is desired then `string.format` can be used instead. You can find a section detailing its use below.
+
+## Complex Criteria
+
+For criteria which might be unwieldy to write out in a single line you can create more complex multi-line Lua scripts. Generally this becomes necessary if you have a large chain of different values you want to test, or need to iterate through multiple values, such as planetary rings or parent bodies.
+
+For example, if we want our hot landable check to only trigger if it's the moon of a ringed planet, then this is one approach:
+
+```Lua
+---@Complex
+if scan.Landable and scan.SurfaceTemperature > 1000 and parents then
+  if parents[0].Scan and parents[0].ParentType == 'Planet' and parents[0].Scan.Rings then
+    return true, 'Hot Landable Moon of Ringed Parent', 'Temperature: ' .. math.floor(scan.SurfaceTemperature) .. ' K'
+  end
+end
+---@End
+```
+
+Unlike in simple one line criteria where the initial directive contains the description, for multi-line scripts the parsing directives are purely used for demarcation. With `---@Complex` indicating the beginning on the script, and `---@End` terminating it.
+
+Rather than simply wanting a true/false expression we now use the values we're checking to construct an `if` statement. (Note that we've also lowered the temperature threshold here, as these are now going to be somewhat rarer than the original check.)
+
+We've also split the conditions into two separate checks. While there's no technical reason it could not be done on one line, breaking them up this way improves readability, and conceptually separates the checks concerning the body itself (it is landable, is it hot, does it have parents), from the checks against the parent's data (do we have its scan data, is it a planet, does it have rings).
+
+If all of that passes then we return our successful results, which consists of three values. `true`, indicating that the check passed, the description string, and the detail string. In version v0.2.23019.109 and later the leading `true` can be optionally omitted and is simply inferred from there being any return value at all.
+
+There are of course different ways to construct this exact same check, depending largely on personal preference.
+
+All in one `if`:
+```Lua
+---@Complex
+if scan.Landable and scan.SurfaceTemperature > 1000 and parents and parents[0].Scan and parents[0].ParentType == 'Planet' and parents[0].Scan.Rings then
+  return true, 'Hot Landable Moon of Ringed Parent', 'Temperature: ' .. math.floor(scan.SurfaceTemperature) .. ' K'
+end
+---@End
+```
+
+Evaluating `parent` details inside `return` statement:
+```Lua
+---@Complex
+if scan.Landable and scan.SurfaceTemperature > 1000 and parents then
+  return 
+    parents[0].Scan and parents[0].ParentType == 'Planet' and parents[0].Scan.Rings ~= nil, 
+    'Hot Landable Moon of Ringed Parent', 
+    'Temperature: ' .. math.floor(scan.SurfaceTemperature) .. ' K'
+end
+---@End
+```
+
+As a simple criteria:
+```Lua
+---@Simple Hot Landable Moon of Ringed Parent
+scan.Landable and scan.SurfaceTemperature > 1000 and parents and parents[0].Scan and parents[0].ParentType == 'Planet' and parents[0].Scan.Rings ~= nil
+---@Detail
+'Temperature: ' .. math.floor(scan.SurfaceTemperature) .. ' K'
+```
+
+Note the change in how `parents[0].Scan.Rings` is checked in the last two examples. Since this is the final result being returned back to the .NET environment we can't count on Lua's "truthiness" to silently consider the existence of the `Rings` object to be `true`.
+
+A multi-line criteria is a fully featured Lua function, and can use just about any feature of the Lua language. For example, variable declaration and `for` loops:
+```Lua
+---@Complex
+if scan.Landable and scan.AtmosphereComposition then
+  local CO2 = 0
+  local N = 0
+  for mat in materials(scan.AtmosphereComposition) do
+    if mat.name == 'CarbonDioxide' then
+      CO2 = mat.percent
+    elseif mat.name == 'Nitrogen' then
+      N = mat.percent
+    end
+  end
+  if CO2 > 0 and N > 0 then
+    return 
+      true, 
+      'Landable CO₂ + Nitrogen atmosphere', 
+      'CO₂: ' .. math.floor(CO2) .. '%, N: ' .. math.floor(N) .. '%'
+  end
+end
+---@End
+```
+
+Labels can be used as well, with the exception of `::Criteria::`, `::End::`, `::Detail::`, and `::Global::` which are reserved for legacy reasons.
+
+For those of you wondering about the `materials` function being used at the beginning of the `for` loop, head down to the Collections and Iterators section below.
+
+## Available Values
+
+All criteria have access to five objects which are passed in from Explorer to the Lua script: `scan`, `parents`, `system`, `biosignals`, and `geosignals`.
+
+`biosignals` and `geosignals` are simple integer values containing the number of surface signals reported in the `FSSBodySignals` event.
+
+`parents` and `system` will be detailed in the Collections and Iterators section.
+
+`scan` is a representation of the journal `Scan` event, and contains the following member properties:
+
+  * `scan.StarSystem` (string): Name of the current system.
+  * `scan.SystemAddress` (ulong): 64-bit unsigned integer uniquely identifying the current system.
+  * `scan.ScanType` (string): Type of scan from which the data originates, e.g. "Detailed", "AutoScan", or "NavBeaconData".
+  * `scan.BodyName` (string): Name of the scanned object.
+  * `scan.BodyID` (int): System specific ID number of body.
+  * `scan.DistanceFromArrivalLS` (double): Distance from point of arrival in light-seconds.
+  * `scan.TidalLock` (bool): Tidally locked true/false.
+  * `scan.TerraformState` (string): Terraform state string from journal, empty for non-terraformable, otherwise "Terraformable", "Terraforming", or "Terraformed".
+  * `scan.PlanetClass` (string): Type of planet, e.g. "High metal content body". (See: [PlanetClass Values](#planetclass-values))
+  * `scan.Atmosphere` (string): Descriptive string for planetary atmosphere, e.g. "hot thick carbon dioxide atmosphere".
+  * `scan.AtmosphereType` (string): Simple string for planetary atmosphere, e.g. "CarbonDioxide".
+  * `scan.AtmosphereComposition` (collection): See [Collections and Iterators](#collections-and-iterators).
+  * `scan.Volcanism` (string): Description of type of volcanic activity, e.g. "major silicate vapour geysers volcanism".
+  * `scan.MassEM` (float): Mass in Earth-masses (5.972 × 10²⁴ kg).
+  * `scan.Radius` (float): Radius in metres.
+  * `scan.SurfaceGravity` (float): Surface gravity in m/s².
+  * `scan.SurfaceTemperature` (float): Average surface temperature in Kelvin.
+  * `scan.SurfacePressure` (float): Average surface pressure in Pascals.
+  * `scan.Landable` (bool): Landable true/false.
+  * `scan.Materials` (collection): See [Collections and Iterators](#collections-and-iterators).
+  * `scan.Composition.Ice` (float): Percentage of content. 
+  * `scan.Composition.Rock` (float): Percentage of content.
+  * `scan.Composition.Metal` (float): Percentage of content.
+  * `scan.SemiMajorAxis` (float): Orbital semi-major axis in metres.
+  * `scan.Eccentricity` (float): Orbital eccentricity.
+  * `scan.OrbitalInclination` (float): Orbital inclination in degrees.
+  * `scan.Periapsis` (float): Argument of periapsis in degrees.
+  * `scan.OrbitalPeriod` (float): Orbital period in seconds.
+  * `scan.RotationPeriod` (float): Rotational period in seconds.
+  * `scan.AscendingNode` (float): Longitude of ascending node in degrees.*
+  * `scan.MeanAnomaly` (float): Mean anomaly in degrees.*
+  * `scan.AxialTilt` (float): Axial tilt in radians.
+  * `scan.Rings` (collection): See [Collections and Iterators](#collections-and-iterators).
+  * `scan.ReserveLevel` (string): Mineral reserve level description.
+  * `scan.StarType` (string): Type of star, e.g. "M". (See: [StarType Values](#startype-values))
+  * `scan.Subclass` (int): Star subclass.
+  * `scan.StellarMass` (float): Mass in solar masses (2×10³⁰ kg).
+  * `scan.AbsoluteMagnitude` (float): Absolute magnitude of star.
+  * `scan.Age_MY` (int): Age of star in millions of years.
+  * `scan.Luminosity` (string): Luminosity class of star, e.g., "Va".
+  * `scan.WasDiscovered` (bool): Previously discovered body true/false.
+  * `scan.WasMapped` (bool): Previously mapped body true/false.
+
+<sup>* Only available in scans on or after 2021-09-22.</sup>
+
+## Collections and Iterators
+
+There are several collections available when creating criteria, as well as specific Lua iterators to assist working with them. The `scan` object itself contains `Materials`, `AtmosphereComposition`, and `Rings` collections. In addition `parents` and `system` collections are available as independent objects.
+
+Keep in mind these are all zero-indexed. However there are iterators provided to simplify working with them. Member properties of the objects returned by iterators are not the original objects, and are not `CamelCased`.
+
+The `Materials` and `AtmosphereComposition` collections within the `scan` object are both similarly structured collections of materials, each of which contains a `Name` and `Percent` member property. They can be iterated on using the `materials` iterator which returns each item in the collection as a Lua table with named indices.
+```Lua
+for material in materials(scan.Materials) do
+  --Available in loop body:
+  --material.name
+  --material.percent
+end
+```
+
+The `scan.Rings` collection is a list of `Ring` objects, each of which has the following member properties:
+  * `scan.Rings[n].Name` (string): Name of ring.
+  * `scan.Rings[n].RingClass` (string): Type of ring.
+  * `scan.Rings[n].MassMT` (float): Mass of ring in megatonnes.
+  * `scan.Rings[n].InnerRad` (float): Orbital radius of inner edge of ring in metres.
+  * `scan.Rings[n].OuterRad` (float): Orbital radius of outer edge of ring in metres.
+
+As with materials, there is a `rings` iterator to assist working with this collection:
+```Lua
+for ring in rings(scan.Rings) do
+  --Available in loop body:
+  --ring.name
+  --ring.ringclass
+  --ring.massmt
+  --ring.innerrad
+  --ring.outerrad
+end
+```
+
+The `system` collection is the set of all scan events previously seen in this system, each of which is a complete scan event with all of its original member properties, [as detailed above](#available-values). The `bodies` iterator will give you each individual scan.
+```Lua
+for body in bodies(system) do
+  --Available in loop body:
+  --body.BodyName
+  --body.BodyID
+  --body.PlanetClass
+  --body.Radius
+  --etc.
+end
+```
+
+Finally the `parents` object is a restructuring of the "Parents" journal property. Each item in the collection has the following member properties:
+  * `ParentType` (string): "Null", "Planet", or "Star". "Null" in this case means the orbital parent is the barycenter of a binary pair.
+  * `Body` (int): System specific Body ID of the parent object.
+  * `Scan` (scan): Complete scan event of the parent object, if available.
+
+The `allparents` iterator is used for the `parents` collection.
+```Lua
+for parent in allparents(parents) do
+  --Available in loop body:
+  --parent.parenttype
+  --parent.body
+  --parent.scan (possibly null)
+end
+```
+
+## Global Block
+
+Another annotation which can be used in a criteria file is `---@Global`. Like the `---@Criteria` annotation it is paired with `---@End` to create a code block.
+
+Any Lua script contained within a `---@Global` block is executed in advance of all processing and exists within the same global state as all subsequent criteria execution. This allows you to set global variables or define your own custom functions that can be used in your criteria. While not strictly necessary it is recommended that only a single `---@Global` block be used. For details on why, see the Under The Hood section.
+
+```Lua
+---@Global
+function systemHasAmmoniaWorld(system)
+  for body in bodies(system) do
+    if body.PlanetClass == 'Ammonia world' then return true end
+  end
+end
+
+function systemHasEarthlikeWorld(system)
+  for body in bodies(system) do
+    if body.PlanetClass == 'Earthlike body' then return true end
+  end
+end
+
+function systemHasWaterWorld(system)
+  for body in bodies(system) do
+    if body.PlanetClass == 'Water world' then return true end
+  end
+end
+
+ammoniaEarthlikePair = `
+ammoniaWaterPair = `
+---@End
+
+---@Complex
+if ammoniaWaterPair ~= scan.StarSystem then
+  if (scan.PlanetClass == 'Water world'  and systemHasAmmoniaWorld(system))
+  or (scan.PlanetClass == 'Ammonia world' and systemHasWaterWorld(system)) then
+    ammoniaWaterPair = scan.StarSystem
+    return true, 'Ammonia and Water World in same system', `
+  end
+end
+---@End
+
+---@Complex
+if ammoniaEarthlikePair ~= scan.StarSystem then
+  if (scan.PlanetClass == 'Earthlike body' and systemHasAmmoniaWorld(system))
+  or (scan.PlanetClass == 'Ammonia world' and systemHasEarthlikeWorld(system)) then
+    ammoniaEarthlikePair = scan.StarSystem
+    return true, 'Ammonia and Earth-like in same system', `
+  end
+end
+---@End
+```
+
+## Formatting Strings
+
+You can use `string.format` for greater control over the display of numbers than the simple "largest whole number" approach of `math.floor`.
+
+`string.format` accepts a string as its first argument into which you want to insert your formatted values using a set of placeholder tokens to denote where those values will be placed and how to format them, followed by the value(s) to insert. 
+
+A simple example: 
+`Luastring.format('Temperature: %f K, Pressure: %fPa', scan.SurfaceTemperature, scan.SurfacePressure)`
+
+This results in a string similar to "Temperature: 42.87649 K, Pressure: 15.32398Pa". Generally you won't need that level of precision in your output, so you can further refine that with something like: 
+
+`Luastring.format('Temperature: %.1f K, Pressure: %.1fPa', scan.SurfaceTemperature, scan.SurfacePressure)`
+
+Which limits the output to a single decimal place, resulting in "Temperature: 42.9 K, Pressure: 15.3Pa" for the same input. Notice that the output is *rounded*, rather than being truncated.
+
+Placeholder tokens start with `%`, followed by an optional format specification (`.1` in the above example), and are terminated by a character indicating the type of value to expect (in this case `f` for `float`).
+
+The complete set of tokens available is beyond the scope of this documentation, but those most useful within custom criteria are:
+
+  * `%f` - float
+  * `%i` - integer
+  * `%e` - exponential float
+  * `%s` - string
+  * `%%` - inserts a "%" symbol (a single `%` is interpreted as the start of a token)
+
+The options to format the output can specify padding, sign inclusion, and decimal places to express, and can be succinctly summarised as `%{sign inclusion}{padding amount}{.decimal places}f`.
+
+Specifying the number of decimal places works as one might expect, with the number being rounded to the places specified, as in the above example.
+
+Padding amount is the minimum number of characters long the output will be. For example an integer padded with `%5i` will insert with three leading spaces to make a total of five characters, *e.g.* "&nbsp;&nbsp;&nbsp;26". Padding *will not truncate*, and numbers that exceed the padding amount will still be retained. Prefixing the padding amount with a `0` will pad with zeroes instead of spaces (e.g., `%05i` resulting in "00026"), while a negative number can be specified for padding to left-justify the number, if desired (e.g., `%-5i` resulting in "26&nbsp;&nbsp;&nbsp;").
+
+A `+` can be prefixed to explicity include the positive sign in your output. For example, `string.format('Ascending node: %+f°', scan.AscendingNode)` to output "Ascending node: +27.15675°".
+
+Finally, all of these can be combined to simultaneously specify sign, padding, and decimal precision:
+
+`string.format('Ascending node: %+06.1f°', scan.AscendingNode)`
+
+This results in an explictly signed number to one decimal place zero-padded to 6 characters (including the sign and decimal point):
+
+"Ascending node: +027.2°"
+
+As an added treat this is not custom criteria or Lua specific, and many other languages use this same style of string value insertion (C, Java, Python, PHP, Ruby, and many others!) So congratulations, you've learned something potentially useful elsewhere!
+
+## Errors
+
+There are two wide categories that errors in scripts can fall into, syntax errors in which the script itself is not valid Lua code, and data based errors where the script language can be considered correct, but is not able to produce a usable result for a particular set of scan data.
+
+Each of these is reported as a row in the Explorer results grid, and when encountered will automatically disable further custom criteria processing to avoid flooding the grid with a potentially very large number of error messages. In both cases you will need to go back into your settings and re-enable custom criteria after you've corrected your script.
+
+Syntax errors are displayed by listing the description of the error, as reported by NLua, in the "Description" column, with the text of the criteria as it was presented to the Lua compiler in the "Detail" column. For simple criteria this text will differ slightly from the content of the criteria file as they are rearranged into a Lua function body. Complex criteria should be largely unchanged.
+
+Common syntax errors include statements such as `if` or `for` missing their closing `end` statement, or the misuse of a comparison operator (`==`) when you need assignment (`=`), or vise versa.
+
+Data errors report differently in that while they still list the NLua error description they instead provide the original scan event JSON, so that the actual data being processed can be directly examined.
+
+The most likely reason for a data error is a misspelled or incorrectly capitalised variable or property name, so check those first. Another possible cause is an attempt to access properties of objects that don't exist, such as checking `parents[2].ParentType` of a scan with only one parent. These can be handled by testing for the existence of the base object before trying to access its member properties, _e.g._ `if parents[2] and parents[2].ParentType == 'Planet' then ...`.
+
+In both cases errors can require a close reading of the criteria script to determine the issue. If you need additional help feel free to reach out on the [forums](https://forums.frontier.co.uk/threads/elite-observatory-search-your-journal-for-potentially-interesting-objects-or-notify-you-of-new-ones-on-the-fly-while-exploring.521544/) or [discord](https://discord.gg/5GbzVxsa), where many people are willing to help.
+
+## Under The Hood
+For those curious about the nitty gritty details of how the criteria file is manipulated into a set of Lua functions, continue reading. For those who just want to write criteria this section will probably not help, and is purely here to satisfy academic interest.
+
+The very first step is that the initial Lua global state is created, some minor housekeeping is done (text encoding is set to UTF-8 and NLua's common language runtime package is loaded), then the iterator functions are defined. This state is torn down and refreshed from scratch any time the criteria file needs to be re-processed.
+
+The specific code of the iterators is as follows:
+
+```Lua
+function materials (material_list)
+  local i = 0
+  local count = material_list.Count
+  return function ()
+    i = i + 1
+    if i <= count then
+      return { name = material_list[i - 1].Name, percent = material_list[i - 1].Percent }
+    end
+  end
+end
+
+function rings (ring_list)
+  local i = 0
+  local count = ring_list.Count
+  return function ()
+    i = i + 1
+    if i <= count then
+      local ring = ring_list[i - 1]
+      return { name = ring.Name, ringclass = ring.RingClass, massmt = ring.MassMT, innerrad = ring.InnerRad, outerrad = ring.OuterRad }
+    end
+  end
+end
+
+function bodies (system_list)
+  local i = 0
+  local count = system_list.Count
+  return function ()
+    i = i + 1
+    if i <= count then
+      return system_list[i - 1]
+    end
+  end
+end
+
+function allparents (parent_list)
+  local i = 0
+  local count
+  if parent_list then count = parent_list.Count else count = 0 end
+  return function ()
+    i = i + 1
+    if i <= count then
+      return { parenttype = parent_list[i - 1].ParentType, body = parent_list[i - 1].Body, scan = parent_list[i - 1].Scan }
+    end
+  end
+end
+```
+
+Once the iterator functions are created criteria file reading starts. All directives are processed, compiled, and executed against the global state *immediately* and *sequentially in order*. While this is largely immaterial for most criteria it is potentially important for `---@Global` blocks, as functions defined inside them cannot be used until after the block is processed. So if for some reason you have a function defined in a second `---@Global` block that is called in the first, it will fail.
+
+`---@Global` directive blocks are compiled *as-is*, with no additional processing by Observatory Explorer.
+
+`---@Complex` blocks are mostly left untouched, but are wrapped in the following function definition, where `n` is simply the line number of the file that the initial directive appeared on:
+
+```Lua
+function Criteria{n} (scan, parents, system, biosignals, geosignals)
+  --text inside ---@Complex block goes here
+end
+```
+
+`---@Simple` criteria blocks use slightly more involved parsing to build a similar function, with the values read from the initial description directive, the criteria expression, and the detail expression (if present) filled in as follows:
+
+```Lua
+function Criteria{n} (scan, parents, system, biosignals, geosignals)
+  local result = {criteria expression here}
+  local detail = {detail expression here}
+  return result, {description here}, detail
+end
+```
+
+`result` and `detail` are evaluated in advance here rather than as part of the `return` statement to take advantage of Lua's more relaxed truthiness as compared to .NET, which makes building expressions slightly friendlier for most users.
+
+Both simple and complex criteria have the same function signature within Lua, accepting the same five arguments, and returning `bool, string, string` values. In the case of complex criteria no return at all is also acceptable in lieu of a `false` result.
+
+Finally, when each scan is received the `system` and `parents` objects are created so they can be used within the criteria function.
+
+The `system` object is a simple .NET dictionary key-value lookup, as Observatory Explorer already maintains a scan history by system.
+
+The `parents` object requires a bit more data munging, on account of the original `scan.Parents` object being a pain to work with (for which reason I leave it undocumented above, despite existing as part of the scan object passed into the criteria functions). The brunt of the work is already done inside Observatory Framework, rearranging the original JSON object into something more sensible for use in various Observatory plugins. As a final step the parent body IDs are looked up in the scan history, and if found the scan is added to the parent collection that is passed to the criteria. This greatly simplifies any criteria that wants to look at parent body scan data.
+
+## Appendix
+
+### PlanetClass Values
+  * Metal rich body
+  * High metal content body
+  * Rocky body
+  * Icy body
+  * Rocky ice body
+  * Earthlike body
+  * Water world
+  * Ammonia world
+  * Water giant
+  * Water giant with life
+  * Gas giant with water based life
+  * Gas giant with ammonia based life
+  * Sudarsky class I gas giant
+  * Sudarsky class II gas giant
+  * Sudarsky class III gas giant
+  * Sudarsky class IV gas giant
+  * Sudarsky class V gas giant
+  * Helium rich gas giant
+  * Helium gas giant
+  * Barycentre* 
+
+<sup>* This class doesn't exist in the original journals, but is injected into barycentre scans by Observatory Explorer to help identify them when writing custom criteria.</sup>
+
+### StarType Values
+  * Main sequence types: O B A F G K M
+  * Brown dwarfs: L T Y
+  * Protostars: TTS AeBe
+  * Wolf-Rayet: W WN WNC WC WO
+  * Carbon stars: CS C CN CJ CH CHd
+  * S-type: MS S
+  * White dwarfs: D DA DAB DAO DAZ DAV DB DBZ DBV DO DOV DQ DC DCV DX
+  * Neutron star: N
+  * Black hole: H
+  * Exotic: X
+  * Self-descriptive: 
+    * SupermassiveBlackHole
+    * A_BlueWhiteSuperGiant
+    * F_WhiteSuperGiant
+    * M_RedSuperGiant
+    * M_RedGiant
+    * K_OrangeGiant
+    * RoguePlanet
+    * Nebula
+    * StellarRemnantNebula
+
+### Ring Classes
+  * eRingClass_Rocky
+  * eRingClass_Icy
+  * eRingClass_MetalRich
+  * eRingClass_Metalic
+
+<sup>Yes, that last one is misspelled, that's how it exists in the journal.</sup>

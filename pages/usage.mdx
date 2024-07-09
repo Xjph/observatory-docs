@@ -1,0 +1,75 @@
+# General Usage Guide
+
+Elite Observatory is a powerful, modular tool designed to monitor and report upon Elite Dangerous journals.
+
+Here you'll find documentation for getting the Observatory set up, as well as detailed guides and troubleshooting for its many plugins.
+
+## Features
+
+  * Read and analyse all CMDR journal files
+  * Configure pop-up and/or voice notifications
+  * Choose from a wide array of [[startnew#Plugins|plugins]] providing expansive functionality
+  * Define custom search/reporting criteria using Lua
+
+## Installation
+
+  * Download the latest version from [the releases page](/release).
+  * Double-click on the downloaded ObservatorySetup.exe to install.
+    * During setup you will be asked which supplementary [plugins](/plugins) (if any) you would like to install.
+  * Once setup has finished, launch Elite Observatory as you would with any other app.
+
+## Usage
+
+import Image from 'next/image'
+
+![An example of Observatory Core's layout.](observatorycore-example.png)
+*An example of Observatory Core's main page.*
+
+Once Observatory is started, you will see a list of installed plugins on the left. 
+  * Navigate to the "Core" tab for further plugin information and settings.
+  * Each other tab corresponds to a plugin, and will have its own information stored there.
+  * You can access additional plugin data and logs by clicking the "Open Plugin Folder" button below the plugin list.
+
+There are four buttons in the bottom corner:
+  * The **Read All** button attempts to read and process all existing journal files, if you have any.
+    * If the Read All button does nothing, your [journal path may be set incorrectly](#troubleshooting).
+  * The **Start Monitor** button will allow Observatory to start monitoring changes to your journal files in real time. Clicking this button again will cease monitoring.
+    * You can set up Observatory to start monitoring automatically by checking the appropriate box in the Core tab.
+  * The **Clear** button will clear all currently displayed data from Observatory.
+  * The **Export** button allows you to export your data to an external file. 
+    * The Export Options dropdown in the Core tab allows you to customise how data is output.
+
+## Plugins
+
+There are many optional plugins available for the Observatory, designed to supplement and enhance the core application. 
+
+By default, three plugins are installed along with Observatory:
+
+  * [Explorer](/plugins/explorer): Finds interesting astronomical features while exploring
+  * [Botanist](/plugins/botanist): Tracks planetary biological signals scanned on foot.
+  * [Herald](/plugins/herald): Enables high-quality cloud-based speech notifications.
+
+Additional plugins can be downloaded as .eop files and can generally be installed by simply double-clicking the file.
+
+  * [BioInsights](/plugins/thirdparty/bioinsights): Provides in-depth detail on biological signal sources.
+  * [Evaluator](/plugins/thirdparty/evaluator): Provides detailed mapping value information for system bodies.
+  * [SignalMonitor](/plugins/thirdparty/signalmonitor): Detects and provides notifications for certain uncommon signal sources.
+  * [GeoPredictor](/plugins/thirdparty/geopredictor): Tracks and predicts planetary geological signals.
+  * [Telegram](/plugins/thirdparty/telegram): Sends notifications via Telegram messenger.
+
+A more complete list of currently available plugins can be found [here](/plugins).
+
+## Troubleshooting
+
+Below is a list of FAQs for Observatory installation and setup. 
+
+  * ** I can't see/launch Observatory!**
+      * Make sure you downloaded ObservatorySetup.exe- by default this should put Observatory in the your application list/Start Menu.
+      * If you downloaded ObservatoryCore.zip (the portable version) then you may need to extract and run the application from there.
+  * ** Observatory can't read any of my data!**
+      * You may need to set your journal path in the Core section of Observatory. In Windows, this path is usually C:\Users\YOURUSERNAME\Saved Games\Frontier Developments\Elite Dangerous.
+      * If you aren't sure where your journal files are, you can search for them in Windows' File Explorer by typing `Journal.*.log` into the search bar. Once you've found the folder your files are in, set Observatory's path to that folder.
+      * Test that your journal folder is correct by clicking the Read All button. If you have any historical journal data, then this should now appear in Observatory.
+  * **Observatory freezes/crashes when I click 'Read All!'**
+    * For CMDRS with very large amounts of journal files, the Read All button may take a long time to process (up to a few minutes on slower systems). On older versions of Observatory, this will make the application unresponsive until complete.
+

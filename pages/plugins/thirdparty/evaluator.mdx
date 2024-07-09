@@ -1,0 +1,56 @@
+# Evaluator
+
+Evaluator is an optional [plugin](/plugins) for the Observatory, designed to maximise efficiency and value of a given system.
+
+## Installation
+
+  * Make sure you already have Observatory [downloaded](/release).
+  * Navigate to https://edjp.colacube.net/observatory and download Evaluator.
+  * Double-click the downloaded .eop file to install it into Observatory.
+  * Evaluator is now ready to use.
+
+## Usage
+
+import Image from 'next/image'
+
+![An example output from Evaluator.](/evaluator-example.png)
+*An example output from Evaluator.*
+
+As with other plugins, Evaluator categorises its output: 
+
+  * **System:** The current system.
+  * **Body:** The current body.
+  * **Type:** Indicates the type of body.
+  * **Distance:** The distance in Ls from the main star.
+  * **Gravity:** The gravity (where applicable) of the body.
+  * **Terraformable:** Whether a body is terraformable (if applicable).
+  * **Current Value:** The current value of the body.
+  * **Potential Max Value**: The potential maximum value of the body (i.e. if DSSed).
+  * **Map:** Whether to map the body or not. If the body is high-value enough, this will be Yes.
+  * **Order:** If there are multiple bodies worth mapping, indicates the order in which to map them.
+  * **Done:** Indicates whether the body has been mapped fully.
+  * **Total Value:** The total value of the system.
+
+Evaluator features a number of settings that can be customised (under the Observatory Evaluator dropdown in the Core tab).
+
+![Evaluator's settings.](/evaluator-settings-example.png)
+*Evaluator's settings.*
+
+Menu Values:
+
+  * **Hide Bodies Below [VALUE]:** Sets the minimum CR value required for a body to display in Evaluator.
+  * **Minimum Mapping Value [VALUE]:** Sets the minimum CR value required for a body to be considered worth mapping.
+  * **Maximum Distance - ELW/WW/Atmospheric/Other [VALUE]:** Sets the maximum distance to consider a body worth mapping for, in the case of earth-like/water/atmospheric/other worlds respectively.
+  * **Maximum Systems to show after Read All [VALUE]:** Sets the maximum amount of systems to display after performing a Read All action.
+
+Buttons:
+
+  * **Atmospherics worth mapping:** Enables/disables checks for atmospheric bodies.
+  * **Notifications for bodies worth mapping:** Enables/disables [[notifications|notifications]].
+  * **Enable efficient route notifications:** Enables/disables notifications for route management.
+  * **Enable debug logging:** Enables/disables verbose debug logs.
+  * **Atmospherics with Bios worth mapping:** Enables/disables checks for atmospheric planets containing biological signals.
+  * **Calculate Efficient Route:** Enables/disables route order.
+  * **Use persistent notification:** Enables/disables a persistent Evaluator notification.
+
+
