@@ -9,7 +9,7 @@ const config: DocsThemeConfig = {
   chat: {
     link: 'https://discord.gg/RAFDHsY',
   },
-  docsRepositoryBase: 'https://github.com/Xjph/observatory-docs',
+  docsRepositoryBase: 'https://github.com/Xjph/observatory-docs/tree/main',
   footer: {
     text: '',
   },
