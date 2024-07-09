@@ -1,9 +1,9 @@
 {
   "index": "Elite Observatory",
   "release": "Download/Releases",
+  "usage": "Usage Guide",
   "overhaul": "Why a UI Overhaul?",
   "plugins": "Plugins",
-  "usage": "Usage Guide",
   "about": {
     "title": "About",
     "type": "page"

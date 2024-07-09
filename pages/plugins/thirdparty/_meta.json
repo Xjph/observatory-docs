@@ -1,6 +1,8 @@
 {
   "bioinsights": "BioInsights",
   "geopredictor": "GeoPredictor",
-  "signalmonitor": "Signal Monitor"
+  "signalmonitor": "Signal Monitor",
+  "evaluator": "Evaluator",
+  "telegram": "Telegram"
 }
   
