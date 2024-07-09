@@ -3,9 +3,6 @@
   "release": "Download/Releases",
   "overhaul": "Why a UI Overhaul?",
   "plugins": "Plugins",
-  "explorer": "Explorer",
-  "botanist": "Botanist",
-  "herald": "Herald",
   "about": {
     "title": "About",
     "type": "page"
