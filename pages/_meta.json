@@ -2,8 +2,9 @@
   "index": "Elite Observatory",
   "release": "Download/Releases",
   "usage": "Usage Guide",
-  "overhaul": "Why a UI Overhaul?",
+  "notifications": "Notifications",
   "plugins": "Plugins",
+  "overhaul": "Why a UI Overhaul?",
   "about": {
     "title": "About",
     "type": "page"
