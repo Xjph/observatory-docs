@@ -1,0 +1,228 @@
+# Interfaces
+<sup>All return types are `void` unless specified.</sup>
+
+Namespace: `Observatory.Framework.Interfaces`
+
+## `IObservatoryCore`
+
+This interface contains properties and methods used by plugins to both actively read data from and send data to Observatory Core. An object implementing this interface is passed to plugins by ObservatoryCore using `IObservatoryPlugin.Load()`, to which they should retain a reference to facilitate any necessary interaction.
+
+### `Guid SendNotification(string title, string detail)`
+
+Sends a notification out to all native notifiers and any plugins implementing `IObservatoryNotifier`.
+Returns a `Guid` value which can be used to track or update the notification during its lifetime.
+
+### `Guid SendNotification(NotificationArgs notificationEventArgs)`
+
+Send a notification with additional arguments out to all native notifiers and any plugins implementing `IObservatoryNotifier`. For details see `NotificationArgs`.
+Returns a `Guid` value which can be used to track or update the notification during its lifetime.
+
+### `CancelNotification(Guid notificationId)`
+
+Cancel and close an active notification identified by the provided `Guid`.
+
+### `UpdateNotification(Guid notificationId, NotificationArgs notificationEventArgs)`
+
+Updates an active notification with a new set of `NotificationArgs`. Updating any timeout values attached to the notification resets them, starting them again from zero.
+
+### `AddGridItem(IObservatoryWorker worker, object item)`
+
+Adds an item to the bottom of the basic UI grid. Plugins are typically expected to pass a self-reference so that Core can identify the grid to update, though interoperating plugins *may* subvert this.
+
+### `AddGridItems(IObservatoryWorker worker, IEnumerable<object> items)`
+
+Similar to `AddGridItem`, but adds multiple lines to the bottom of the basic UI grid in a single bulk operation. Preferable over multiple single line additions for performance reasons.
+
+### `SetGridItems(IObservatoryWorker worker, IEnumerable<object> items)`
+
+Similar to `AddGridItems`, but clears the grid and replaces all items in the basic UI grid leaving only the items provided.
+
+### `ClearGrid(IObservatoryWorker worker, object templateItem)`
+
+Clears the basic UI grid, leaving it empty, and setting the headers according to the `templateItem` provided.
+
+### `Status GetStatus()`
+
+Retrieves the current content of the Elite Dangerous `status.json` file.
+
+### `string Version`
+
+Reports the current version string of Observatory Core.
+
+### `Action<Exception, string> GetPluginErrorLogger(IObservatoryPlugin plugin)`
+
+Returns a delegate usable by a plugin for error logging.
+
+### `ExecuteOnUIThread(Action action)`
+
+Performs the provided action on the application UI thread.
+
+### `HttpClient HttpClient`
+
+Application scoped `HttpClient` object used for making external requests.
+
+### `LogMonitorState CurrentLogMonitorState`
+
+Gets the current `LogMonitorState` from Observatory Core.
+
+### `bool IsLogMonitorBatchReading`
+
+Indicates if a batch read from the Elite Dangerous log files is in progress, typically for the purposes of suppressing notifications or skipping processing that is only relevant for real-time journal data.
+
+### `string PluginStorageFolder`
+
+Gets a path to a writable folder which can be used by a plugin to store arbitrary data. Plugin storage folders are unique to each plugin.
+
+### `Task PlayAudioFile(string filePath)`
+
+Plays the audio file at the provided path using the current default audio output device. Supported formats are `.wav`, `.mp3`, `.aiff`, `TODO: figure out full list`
+
+### `SendPluginMessage(IObservatoryPlugin plugin, object message)`
+
+Relays arbitrary data to other plugins. The contents of `object message` need to be coordinated with the receiving plugin. See: `ReceivePluginMessage`.
+
+### `RegisterControl(object control)`
+
+Registers a UI control with Observatory Core's internal theme manager so that application themes can be applied. Observatory will recursively theme all child controls of the provided control.
+
+### `RegisterControl(object control, Func<object, bool> applyTheme)`
+
+Registers a UI control with Observatory Core's internal theme manager so that application themes can be applied. Observatory will recursively theme all child controls of the provided control. Allows the plugin to provide an `applyTheme` delegate function which can be used to omit some recursed controls from themeing. This function must accept an `object` (the control) as a parameter and return `bool` indicating whether the control should be themed (`true`) or not (`false`).
+
+### `UnregisterControl(object control)`
+
+Unregisters a control from Observatory Core's internal theme manager. Will also stop themeing of all child controls.
+
+### `string GetCurrentThemeName()`
+
+Retrieves the display name of the currently applied theme.
+
+### `Dictionary<string, Color> GetCurrentThemeDetails()`
+
+Retrieves the complete details of the currently applied theme. An example of an entry in the returned dictionary: `{ "Button.BackColor", Color.DarkBlue }`
+
+### `SaveSettings(IObservatoryPlugin plugin)`
+
+Saves any changes to plugin settings. Necessary if settings can be changed from the plugin UI outside of the standard settings window.
+
+### `OpenSettings(IObservatoryPlugin plugin)`
+
+Opens the standard settings window for the provided plugin.
+
+### `JournalEventArgs DeserializeEvent(string json, bool replay = false)`
+
+Deserializes a JSON journal entry into Observatory JournalEventArgs. Optionally can replay the event to all plugins as if processed normally from the journal, otherwise will return the event args without firing any other plugin events.
+
+### `FocusPlugin(string pluginName)`
+
+Switched selected tab to the named plugin, if found.
+
+## `IObservatoryPlugin`
+
+This interface contains properties and methods common to both plugin types and is the base interface for both `IObservatoryWorker` and `IObservatoryNotifier`. Not typically implemented on its own, instead implement the worker or notifier interface as appropriate for the plugin.
+
+### `Load(IObservatoryCore observatoryCore)`
+
+Called on startup by Observatory Core when a plugin is first loaded. Passes an object implementing `IObservatoryCore` through which the plugin can interact with Observatory.
+
+### `string Name { get; }`
+
+Full name of the plugin.
+
+### `string Name { get; }` (Optional)
+
+Short name of the plugin. Used in space constrained contexts such as tab labels. If omitted the full name is used.
+
+### `string Version { get; }`
+
+Version string of the plugin.
+
+### `PluginUI PluginUI { get; }`
+
+`PluginUI` object which determins the plugin's UI. See the type documentation for more details.
+
+### `object Settings { get; set; }`
+
+Arbitrary object containing all settings for the plugin. Should be initialised with sensible defaults which are used the first time a plugin is loaded. On subsequent loads the settings object will be `set` from the previously saved settings prior to `Load()` being invoked.
+
+For more details on using the settings object, see here.
+
+### `IObservatoryComparer ColumnSorter` (Optional)
+
+Object implementing `IObservatoryComparer` which is used to sort columns on a basic UI data grid.
+
+If omitted a natural sort is used.
+
+### `HandlePluginMessage(string sourceName, string sourceVersion, object messageArgs)` (Optional)
+
+Receives and handles inter-plugin messages sent via `IObservatoryCore.SendPluginMessage`.
+
+If omitted all messages are ignored.
+
+### `byte[] ExportContent(string delimiter, ref string filetype)` (Optional)
+
+Plugin-specific data export implementation. Called when a file export of plugin data is requested. For a basic delimited `.csv` the specified delimiter should be used. A plugin may also opt to return any arbitrary file type, in which case the delimiter can be ignored and the `filetype` string should be updated to the correct filename extension for the returned file content.
+
+If omitted Basic UI plugins will dump their unmodified data grid content to a `.csv` file, which Panel UI plugins will simply not have an export option available to the user.
+
+### `ObservatoryReady()` (Optional)
+
+Called when Observatory finishes all loading and the UI is fully initialised and ready.
+
+### `ApplyTheme(object control)` (Optional)
+
+Called by Observatory to determine if a UI control should be themed. Any controls added later in the application lifetime or not part of the main plugin panel hierarchy will need to be specifically added via `IObservatoryCore.RegisterControl`.
+
+If omitted all controls in the main panel hierarchy are themed.
+
+## `IObservatoryWorker`
+
+This interface contains methods used by "worker" type plugins which read journal data and produce output.
+
+### `JournalEvent<TJournal>(TJournal journal) where TJournal : JournalBase`
+
+Method called when any journal events are processed. Most work done by worker plugins will typically happen here.
+
+See the journal event type documentation for details on what can be passed to this method.
+
+### `StatusChange(Status status)`
+
+Called when the Elite Dangerous `status.json` file changes.
+
+### `LogMonitorStateChanged(LogMonitorStateChangedEventArgs eventArgs)`
+
+Called when Observatory's journal monitoring changes state, *e.g.* from "Read All" to realtime monitoring.
+
+## `IObservatoryNotifier`
+
+This interface contains methods used by "notifier" type plugins which respond to notification events raised by other plugins.
+
+### `OnNotificationEvent(NotificationEventArgs)`
+
+Method called when other plugins send notification events to Observatory Core.
+
+### `bool OverrideAudioNotifications { get; }` (Optional)
+
+Can be set by notification plugins to indicate that Observatory native audio notifications should be suppressed while this plugin is enabled.
+
+If omitted native audio notifications are not suppressed.
+
+### `bool OverridePopupNotifications { get; }` (Optional)
+
+Can be set by notification plugins to indicate that Observatory native popup notifications should be suppressed while this plugin is enabled.
+
+If omitted native popup notifications are not suppressed.
+
+## `IObservatoryComparer : System.Collections.IComparer`
+
+### `int SortColumn { get; set; }`
+
+Indicates the requested column ID to sort by.
+
+### `int Order { get; set; }`
+
+Current requested order of sorting. Ascending = 1, Descending = -2, No sorting = 0.
+
+### `int Compare(Object x, Object y)`
+
+Compares two objects and returns a value indicating whether one is less than, equal to, or greater than the other. Any return value less than 0 indicates that `x` is greater. Any return value greater than 0 indicates that `y` is greater. Returning 0 indicates they are equal.

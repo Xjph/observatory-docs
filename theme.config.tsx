@@ -20,6 +20,11 @@ const config: DocsThemeConfig = {
       </span>
     ),
   },
+  useNextSeoProps() {
+    return {
+      titleTemplate: '%s'
+    }
+  },
   head: () => {
     const { frontMatter } = useConfig();
     return (
