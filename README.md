@@ -1,22 +1,22 @@
-# Nextra Docs Template 
+# Observatory Project Documentation
 
-This is a template for creating documentation with [Nextra](https://nextra.site).
+This repo contains the documentation for [Elite Observatory Core](https://github.com/xjph/ObservatoryCore) and its associated plugins.
 
-[**Live Demo →**](https://nextra-docs-template.vercel.app)
+All commits to the main branch are automatically published to the documentation site as https://observatory.xjph.net/.
 
-[![](.github/screenshot.png)](https://nextra-docs-template.vercel.app)
+## Contributing
 
-## Quick Start
-
-Click the button to clone this repository and deploy it on Vercel:
-
-[![](https://vercel.com/button)](https://vercel.com/new/clone?s=https%3A%2F%2Fgithub.com%2Fshuding%2Fnextra-docs-template&showOptionalTeamCreation=false)
+Any modifications to this documention should be submitted as PRs to this repo. Simple modifications to the markdown files do not typically require any special development knowledge or environment.
 
 ## Local Development
 
-First, run `pnpm i` to install the dependencies.
+To locally test and confirm changes you should create a local dev instance of the documentation site.
 
-Then, run `pnpm dev` to start the development server and visit localhost:3000.
+`pnpm` is recommended over `npm`. The Vercel host will read the `pnpm-lock.yaml` file for installed version information, not `package-lock.json`, so using `npm` will cause failed deployments in the event of any updated packages.
+
+First, if necessary, run `npm i -g pnpm`, then `pnpm i` to install the dependencies.
+
+`pnpm dev` will then start the development server hosted at http://localhost:3000.
 
 ## License
 
