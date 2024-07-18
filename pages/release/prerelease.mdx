@@ -7,11 +7,19 @@ description: Tool for reading/monitoring Elite Dangerous journals for interestin
 
 [Information about the overhaul and what is changing.](/overhaul)
 
-### v0.3.24188.1655 - UI Overhaul
+### v0.3.24200.1233 - UI Overhaul
 
 Release versions:
-  * [Installer](https://xjph.net/Observatory/0.3.24188.1655/ObservatorySetup.exe)
-  * [Portable](https://xjph.net/Observatory/0.3.24188.1655/ObservatoryPortable.zip)
+  * [Installer](https://xjph.net/Observatory/0.3.24200.1233/ObservatorySetup.exe)
+  * [Portable](https://xjph.net/Observatory/0.3.24200.1233/ObservatoryPortable.zip)
+
+#### July 18, 2024 Bugfixes
+
+Core
+
+  * Update `AudioHandler` to ignore zero-length audio (fixes a silent failure where audio stops working for remainder of session)
+  * Added volume control slider to Core settings, no longer controller per-plugin
+  * Fix crash on exit that was possible if Core tab was never selected during a session
 
 #### July 6, 2024 Bugfixes and Features
 
