@@ -5,18 +5,44 @@ description: Tool for reading/monitoring Elite Dangerous journals for interestin
 
 # Observatory Core Downloads
 
-If you are looking for the pre-release testing version [you can find it here](/release/prerelease).
-
 ## Latest
 
-### v0.2.23060.2034 - Export Options
+### v1.0.0 - UI Overhaul
 
 Release versions:
-  * [Installer](https://github.com/Xjph/ObservatoryCore/releases/download/v0.2.23060.2034/ObservatorySetup.exe)
-  * [Portable](https://github.com/Xjph/ObservatoryCore/releases/download/v0.2.23060.2034/ObservatoryCore.zip)
+  * [Installer](https://github.com/Xjph/ObservatoryCore/releases/download/v1.0.0/ObservatorySetup.exe)
+  * [Portable](https://github.com/Xjph/ObservatoryCore/releases/download/v1.0.0/ObservatoryPortable.zip)
 
-This release adds a feature that several people have asked for, courtesy of [fredjk-gh](https://github.com/fredjk-gh). The export format can now be changed between the defaulted fixed width output and a tab separated file for ease of use with automated processing tools and spreadsheet programs. Find the option to change this in the new "Export Options" pane of the core tab.
+It's finally here, but first there's an important point that needs attention.
 
-Of interest to plugin developers, there is a new `AddGridItems` method which can add multiple rows to a plugin UI grid in only a single call, which should improve performance for large changes to the grid.
+***MULTIPLE PLUGINS ARE BROKEN BY THIS UPDATE, YOU WILL NEED TO UPDATE THEM***
 
-In addition there are a number of bug fixes for edge case error conditions, and some minor tweaks for behaviour of *linux* builds courtesy of [cerus](https://github.com/cerus), who has also provided an *unofficial* linux build of Observatory, which you can find here: https://github.com/cerus/observatorycore-linux
+Significant changes have been made to plugin presentation and behaviour. In most cases this can be fixed by updating the plugin as well, most plugins should have 1.0.0 compatible updates either already available or coming very soon.
+
+Now that's out of the way, what's actually in this update?
+
+#### What's New?!
+The Observatory UI has been completely overhauled and is hopefully now a little more intuitive. The main points of difference for end users are:
+- Switched from vertical side-tabs to traditional top-tabs
+- Rather than dumping every setting for every plugin onto the "Core" tab Plugin settings are now presented in their own windows, accessed by selecting a plugin and hitting the "Plugin Settings" button
+- Light and Dark themes are now available
+  - In addition it is possible to add user-created themes, instructions for creating them will come soon
+- "Read-All" gives an indication of progress, doesn't appear to just hard lock the application while running, *and* can be cancelled by the user if it appears to be taking too long
+- Plugins are no longer limited to simple grid views and can provide more complex UIs
+- Plugins can be individually toggled on/off using checkboxes on the plugin list
+- Resizing columns works (re-ordering soon, maybe)
+- Sorting by column works (plugins can opt to disable this if their data shouldn't be considered sortable)
+- Observatory better remembers its exited state in general, window location, column sizing, last tab viewed, *should* all persist
+- Notification plugins that take over audio or popup notification duties can now disable the settings pane for the associated native functionality (native voice notifications and Herald notifications can no long talk over each other)
+- Audio settings have been unified in the Core tab, rather than having individual conflicting settings per-plugin
+- Changing your journal folder location is harder to do accidentally (you need to double-click the journal folder path in the core settings pane)
+- Due to a UI framework change hopefully the annoying solid white popup bug is gone
+- Start Monitor On Launch and Read All On Launch settings have returned
+- Exporting has been improved and will now only export the tab your are currently on, as well as having both tab-separated .csv and .xlsx export options available
+- A button to quickly access the plugin data folder has been added
+- Explorer Custom Criteria has a [new criteria annotation syntax](/explorer/customcriteria) that plays nicer with Lua development environments, though the original `::Label::` style annotations still work
+
+#### Another Note
+Observatory is now self-signed and checks all loaded plugins against its own signature to confirm their origin. If an unsigned or signed but not matching plugin is loaded the user will be presented with a one-time dismissable warning about running code from unknown sources.
+
+This is *not* a robust security measure, but I always felt a little weird about Observatory being a possible vector for malicious code. By running Observatory you are implicitly trusting *me* to not do anything untoward, but I can't really do anything about the plugins you load, which have just as much access and ability to run arbitrary code as Observatory does. This warning is only there to serve as a reminder that by loading these plugins you are extending that trust to additional parties.
