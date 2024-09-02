@@ -43,6 +43,9 @@ The Observatory UI has been completely overhauled and is hopefully now a little 
 - Explorer Custom Criteria has a [new criteria annotation syntax](/explorer/customcriteria) that plays nicer with Lua development environments, though the original `::Label::` style annotations still work
 
 #### Another Note
+
+*There is a minor issue right now where some systems aren't able to read this signature and incorrectly report that Observatory is a debug build. This should not impact any usage of the application and can be ignored.*
+
 Observatory is now self-signed and checks all loaded plugins against its own signature to confirm their origin. If an unsigned or signed but not matching plugin is loaded the user will be presented with a one-time dismissable warning about running code from unknown sources.
 
 This is *not* a robust security measure, but I always felt a little weird about Observatory being a possible vector for malicious code. By running Observatory you are implicitly trusting *me* to not do anything untoward, but I can't really do anything about the plugins you load, which have just as much access and ability to run arbitrary code as Observatory does. This warning is only there to serve as a reminder that by loading these plugins you are extending that trust to additional parties.
