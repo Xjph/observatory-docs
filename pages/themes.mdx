@@ -1,0 +1,94 @@
+# Custom Themes
+
+Users are able to create their own custom themes starting in Observatory Core 1.0.0.
+
+These themes are imported from `.eot` files (Elite Observatory Theme), which are simply text files containing a single JSON object assigning colours to various UI components.
+
+The object must contain two top level properties, `Name`, which is simply the name to display in the theme selection dropdown, and `Theme`, which is in turn an object containing all of the colours to be set.
+
+`Theme` must contain *at least* `Default.BackColor` and `Default.ForeColor` properties. These are fallback colours use for *all UI elements* if not otherwise specified by the theme, and will generally serve as the primary colours of your theme.
+
+In addition to the two default colour properties you can add an arbitrary number of additional colours for any type of Windows Form control and colour property thereof. Most will just have `{Type}.BackColor` and `{Type}.ForeColor`, though some have more, e.g. `LinkLabel.ActiveLinkColor`.
+
+The colour property itself can be either a named Windows colour, such as `Blue`, `Fuchsia`, or `ButtonFace`. Alternatively an RGB value can be specified as three separate `R`, `G`, and `B` components, such as `"R":128,"G":64,"B":128`.
+
+Control types and property names *are case sensitive*.
+
+## Example
+
+The following is a sample theme, replicating the classic Windows 3.1 colour theme "Hot Dog Stand". Most controls which you will need to modify in a theme will be included here.
+
+[hotdog.eot](/hotdog.eot):
+```json
+{
+    "Name": "Hot Dog Stand",
+    "Theme": {
+        "Default.BackColor": {
+            "Name": "Red"
+        },
+        "Default.ForeColor": {
+            "Name": "ControlText"
+        },
+        "ComboBox.BackColor": {
+            "Name": "Yellow"
+        },
+        "ComboBox.ForeColor": {
+            "Name": "WindowText"
+        },
+        "LinkLabel.ActiveLinkColor": {
+            "Name": "Yellow"
+        },
+        "LinkLabel.DisabledLinkColor": {
+            "R": 0,
+            "B": 0,
+            "G": 200
+        },
+        "LinkLabel.LinkColor": {
+            "R": 0,
+            "B": 0,
+            "G": 200
+        },
+        "LinkLabel.VisitedLinkColor": {
+            "R": 0,
+            "B": 0,
+            "G": 133
+        },
+        "PluginListView.BackColor": {
+            "Name": "Yellow"
+        },
+        "PluginListView.ForeColor": {
+            "Name": "WindowText"
+        },
+        "Button.BackColor": {
+            "Name": "Yellow"
+        },
+        "Button.ForeColor": {
+            "Name": "WindowText"
+        },
+        "NumericUpDown.BackColor": {
+            "Name": "Yellow"
+        },
+        "NumericUpDown.ForeColor": {
+            "Name": "WindowText"
+        },
+        "TrackBar.ForeColor": {
+            "Name": "WindowText"
+        },
+        "UpDownButtons.BackColor": {
+            "Name": "Yellow"
+        },
+        "UpDownButtons.ForeColor": {
+            "Name": "WindowText"
+        },
+        "UpDownEdit.BackColor": {
+            "Name": "Yellow"
+        },
+        "UpDownEdit.ForeColor": {
+            "Name": "WindowText"
+        }
+    }
+}
+
+```
+
+For a list of additional Windows Forms controls which may be used please refer to either the [official Microsoft documentation](https://learn.microsoft.com/en-us/dotnet/desktop/winforms/controls/controls-to-use-on-windows-forms) or simply ask myself or the author of the appropriate plugin what controls were used.

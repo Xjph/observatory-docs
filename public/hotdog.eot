@@ -1,0 +1,68 @@
+{
+    "Name": "Hot Dog Stand 3",
+    "Theme": {
+        "Default.BackColor": {
+            "Name": "Red"
+        },
+        "Default.ForeColor": {
+            "Name": "ControlText"
+        },
+        "ComboBox.BackColor": {
+            "Name": "Yellow"
+        },
+        "ComboBox.ForeColor": {
+            "Name": "WindowText"
+        },
+        "LinkLabel.ActiveLinkColor": {
+            "Name": "Yellow"
+        },
+        "LinkLabel.DisabledLinkColor": {
+            "R": 0,
+            "B": 0,
+            "G": 200
+        },
+        "LinkLabel.LinkColor": {
+            "R": 0,
+            "B": 0,
+            "G": 200
+        },
+        "LinkLabel.VisitedLinkColor": {
+            "R": 0,
+            "B": 0,
+            "G": 133
+        },
+        "PluginListView.BackColor": {
+            "Name": "Yellow"
+        },
+        "PluginListView.ForeColor": {
+            "Name": "WindowText"
+        },
+        "Button.BackColor": {
+            "Name": "Yellow"
+        },
+        "Button.ForeColor": {
+            "Name": "WindowText"
+        },
+        "NumericUpDown.BackColor": {
+            "Name": "Yellow"
+        },
+        "NumericUpDown.ForeColor": {
+            "Name": "WindowText"
+        },
+        "TrackBar.ForeColor": {
+            "Name": "WindowText"
+        },
+        "UpDownButtons.BackColor": {
+            "Name": "Yellow"
+        },
+        "UpDownButtons.ForeColor": {
+            "Name": "WindowText"
+        },
+        "UpDownEdit.BackColor": {
+            "Name": "Yellow"
+        },
+        "UpDownEdit.ForeColor": {
+            "Name": "WindowText"
+        }
+    }
+}
