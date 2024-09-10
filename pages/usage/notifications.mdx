@@ -1,0 +1,56 @@
+# Notifications
+
+Observatory is able to notify you of the data it reads, without having to directly look at the application. 
+
+There are two methods of notification available:
+
+* [Popup Notifications](#popup-notifications)
+* [Voice Notifications](#voice-notifications)
+
+Notifications (whether popups or voice) will trigger simultaneously upon finding a point of interest: The exact things Observatory notifies you of can be customised with [plugins](/usage/plugins).
+
+## Popup Notifications
+
+![A notification example.](/notification-example.png)
+
+> **Note:** Pop-up notifications can be overridden in their entirety by notifications plugins. When this happens these settings are unavailable and replaced with a message indicating which plugin has done so.
+
+This block of settings controls the appearance and behaviour of the built-in "toast" style notifications.
+
+![Popup Notification Settings](/popup-settings.png)
+
+* **Display:** On a multi-monitor system choose the display on which pop-ups are shown.
+
+* **Corner:** Chooses the default location of pop-ups. Some plugins may override this.
+
+* **Font:** Choose the font to use for the text in the notification.
+
+* **Scale:** Adjust the size of the notifications, as a percentage of default, from 1% to 500%.
+
+* **Duration:** Adjust the length of time a notification remains on screen, in milliseconds. Some plugins may override this.
+
+* **Colour:** Select the colour used for the text and border of the pop-up.
+
+* **Test:** Displays a test notification using your current pop-up settings.
+
+* **Enabled:** Turn pop-up notifications on or off.
+
+## Voice Notifications
+
+> **Note:** Voice notifications can be overridden in their entirety by notifications plugins. When this happens these settings are unavailable and replaced with a message indicating which plugin has done so.
+
+This block of settings controls the appearance and behaviour of the built-in voice notifications. These notifications use basic Windows text-to-speech. In a default Observatory installation they are overridden by [Herald](/usage/plugins/herald) which provides much higher quality voices.
+
+![Popup Notification Settings](/popup-settings.png)
+
+* **Speed:** Adjust the rate at which the notification speaks.
+
+* **Voice:** Choose the voice to use when speaking from the list of currently available TTS voices on your system.
+
+* **Test:** Speaks a sample notification using the currently selected voice.
+
+* **Enabled:** Turn voice notifications on or off.
+
+## Plugin Notifications
+
+Plugins are able to implement their own notification types, or replace the existing native popup or voice notifications. The specifics of how they function will be specific to the particular plugin providing those notifications. One such notification which is bundled with Observatory is [Herald](/usage/plugins/herald).

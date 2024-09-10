@@ -1,0 +1,58 @@
+# Plugins
+
+Elite Observatory Core was built to be highly modular and does essentially nothing without plugins. Naturally this would not be a particularly useful package to install in that condition, so the commonly distributed version of Observatory is bundled with three plugins out-of-the-box.
+
+Currently installed plugins are listed at the top of the Core tab, along with the type(s) of plugins they are, and the installed version number. If any errors prevent the loading of a plugin then these might be replaced with the plugin filename and the nature of the error instead.
+
+![Plugin List](/plugin-list.png)
+
+The checkboxes on the left can be used to toggle individual plugins on or off, if needed.
+
+Along the bottom of this list are three buttons:
+
+*Plugin Settings:* Opens the settings window of the currently selected plugin. The specifics of this window will vary by plugin.
+
+*Open Plugin Data Folder:* Some plugins, such as [Herald](/usage/plugins/herald), need to store local files as part of their normal operation. This button will open the storage location for the currently selected plugin should you need to interact with those files. Generally this should only be necessary if something has gone wrong.
+
+*Open Plugins Folder:* Opens the folder into which plugins are placed when installed. Useful when manually installing plugins to quickly navigate to that location, or when plugins need to be removed.
+
+
+## Core Plugins
+
+* [Explorer](/usage/plugins/explorer): Astronomical feature cataloguing.
+* [Botanist](/usage/plugins/botanist): Simple biological signal cataloguing.
+* [Herald](/usage/plugins/herald): High-quality spoken notifications.
+
+## Third-Party Plugins
+
+Observatory also exposes an internal set of interfaces allowing other developers to create and distribute their own plugins. What follows is a partial list of those currently available. If you know of any not on this list reach out via the [forums](https://forums.frontier.co.uk/threads/elite-observatory-search-your-journal-for-potentially-interesting-objects-or-notify-you-of-new-ones-on-the-fly-while-exploring.521544/) or [discord](https://discord.gg/RAFDHsY).
+
+Precise installation instructions can be found for any given plugin on its own page.
+
+*If a plugin is marked `(BETA)`, it is not complete and you may encounter issues while using it.*
+
+
+### Biological and Geological Signals
+
+  * [BioInsights](/usage/plugins/thirdparty/bioinsights): Detailed biological signal cataloguing.
+  * [GeoPredictor](/usage/plugins/thirdparty/geopredictor): Detailed geological signal cataloguing.
+
+### Stars & Bodies
+
+  * [Evaluator](/usage/plugins/thirdparty/evaluator): Body mapping and routing guide.
+
+### Mining
+
+  * Prospector: Mining and hotspot information.
+
+### Notifications
+
+  * Aggregator `(BETA)`: Detailed notification log.
+  * [Telegram Notifier](/usage/plugins/thirdparty/telegram): Notifications through Telegram.
+
+### Miscellaneous
+
+  * Archivist `(BETA)`: Journal archive and browser.
+  * Fleet Commander `(BETA)`: Comprehensive fleet carrier information.
+  * Helm `(BETA)`: Various useful routing information.
+  * Stat Scanner: Personal bests and galactic record information.
