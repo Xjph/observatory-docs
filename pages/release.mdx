@@ -5,7 +5,21 @@ description: Tool for reading/monitoring Elite Dangerous journals for interestin
 
 # Observatory Core Downloads
 
-## Latest - v1.0.2 - Week One Bug Fixes
+## Latest - v1.0.3 - Bugfix 3
+
+Release versions:
+  * [Installer](https://github.com/Xjph/ObservatoryCore/releases/download/v1.0.3/ObservatorySetup.exe)
+  * [Portable](https://github.com/Xjph/ObservatoryCore/releases/download/v1.0.3/ObservatoryPortable.zip)
+
+Another small set of bugfixes for Observatory Core 1.0.
+
+* Handle case when Windows default audio device doesn't present through NAudio as device index -1.
+  * Also rename "Microsoft Sound Mapper" device to "Default Audio Device" to improve clarity
+* Improve settings loading failure UX by falling back to a sensible default for several issue-prone settings, should prevent seeing this error repeatedly after restarting application
+* Rudimentary handling for display scaling in plugin settings window
+  * Hoping to improve the appearance of this window further for *all* users, it's currently pretty awkward
+
+### v1.0.2 - Week One Bug Fixes
 
 Release versions:
   * [Installer](https://github.com/Xjph/ObservatoryCore/releases/download/v1.0.2/ObservatorySetup.exe)
