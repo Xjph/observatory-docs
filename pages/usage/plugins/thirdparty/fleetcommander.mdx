@@ -1,0 +1,29 @@
+# Fleet commander
+
+This plugin is an essential assistant for Carrier owners who regularly move their carriers. Features:
+
+*   Tracks carrier tritium levels
+*   Tracks jump cooldowns and notifies you when you can schedule a new jump (taking into account the actual jump time provided by the game).
+*   [Beta] Supports Spansh Carrier route plotting and injects the next jump into the system clipboard after jump cooldown ends.
+*   [Beta] Supports multiple commanders with carriers.
+*   [Beta] Has a shiny UI which includes on-screen countdowns (jump and cooldown).
+
+import Image from 'next/image'
+
+![A sample view of Fleet Commander](/fleetcommander-example.png)
+*A sample view from Fleet Commander*
+
+See the [Changelog page](https://github.com/fredjk-gh/ObservatoryPlugins/wiki/Plugin:-Fleet-Commander) for release notes and download links or install via the AutoUpdater.
+
+## Tips
+
+*   Perform a read-all after installing v0.24.143.0120-beta. The tips for previous versions are no longer relevant
+    because known carriers are now cached and thus always known (for all commanders).
+*   If the plugin loses track of where your carrier position while following a route, right-click the system you're
+    in within the route listbox and select "Set current position". Tracking carrier position based on journal data is quite difficult.
+
+For previous versions (Observatory Core &lt;= 0.2.x):
+
+*   You need to interact with the carrier in some way (docking, opening carrier management, etc) for your carrier to be detected
+    (it looks for a CarrierStats event). This version of the plugin was statelesss!
+*   As long as you don't restart Observatory Core, it will tell you when the jump cooldown has ended even with the game client closed.
