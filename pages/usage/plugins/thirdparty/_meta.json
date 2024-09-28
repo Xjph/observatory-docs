@@ -1,8 +1,15 @@
 {
+  "aggregator": "Aggregator",
+  "archivist": "Archivist",
   "bioinsights": "BioInsights",
-  "geopredictor": "GeoPredictor",
-  "signalmonitor": "Signal Monitor",
   "evaluator": "Evaluator",
+  "fleetcommander": "Fleet Commander",
+  "fredjk-autoupdater": "fredjk-gh AutoUpdater",
+  "geopredictor": "GeoPredictor",
+  "helm": "Helm",
+  "prospector": "Prospector",
+  "signalmonitor": "Signal Monitor",
+  "statscanner": "Stat Scanner",
   "telegram": "Telegram"
 }
   

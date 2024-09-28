@@ -1,0 +1,96 @@
+# Aggregator
+
+The Notification Aggregator plugin is effectively a notification log -- collecting notifications from all other plugins
+into one place to reduce the number of times you need to switch between plugins. When supported, Aggregator can display
+extended information not visible in the source plugin or other modes of notification (ie. popup, voice).
+
+import Image from 'next/image'
+
+![A sample view of Aggregator](/aggregator-example.png)
+*A sample view from Aggregator.*
+
+## Features of the 1.0.x release
+
+*   A DataGridView-based UI grouped by body with a summary row showing key values for each body. Notifications
+    associated with each body grouped below. Body summaries with no associated notifications can be hidden (default).
+    Hover over the icons in the system and body summary rows to see an explanation of what they mean. (There's also a
+    guide below in the Tips section.)
+*   The font size is scalable (larger or smaller relative to the app default application font size).
+*   Provides an "interest tracking" column -- details below.
+*   A "jump to plugin" feature -- Click on the plugin name in the "Sender" column to focus the plugin which generated
+    the notification.
+*   Supports multiple commanders.
+
+The ✅ or "Interest Tracking" column allows you to mark notifications with intent to visit. Click the 🔍 icon to mark
+something as interesting and it becomes an empty checkbox. When you've visited the body, click the empty checkbox to
+check it off (✅). If you map the body or land on it, it will automatically be checked off for you. Note that this
+state is not persisted.
+
+See the [Changelog page](https://github.com/fredjk-gh/ObservatoryPlugins/wiki/Plugin:-Aggregator) for release notes and download links or install via the AutoUpdater.
+
+## Tips
+
+*   Older versions of plugins will not support all available features (for example grouping with other notifications
+    for the same body or the jump-to-plugin feature). For the best experience, keep your plugins up-to-date!
+*   Several icons are used. Here's what they mean:
+    *   System-level:
+        *   🆕: System is undiscovered.
+        *   💯: All bodies have been scanned (FSSAllBodiesFound event has fired).
+        *   ⛽: System contains a scoopable star.
+    *    Body-level:
+        *   ☀: Body is a star
+            *   ⛽: Indicates the star is scoopable.
+        *   🪐: Body is a gas giant
+        *   🌏: Body is an earthlike
+        *   🌑: Body is some other planet type (MR, HMC, RB, IB, WW, AW)
+        *   💰: Body is high value (ELW, WW, AW or Terraformable)
+        *   🌐: Body has been mapped by the current commander
+        *   🛬: Body is landable
+        *   🧬: Body has biological signals (includes count)
+        *   🌋: Body has geological signals (includes count)
+
+## Settings
+
+*   Exclude matching (| separated literals)
+    *   Notifications matching this filter will not be included in the grid. You can provide multiple values by separating
+        them with `|`. This setting does not take effect until the next notification arrives.
+    *   Default: (Empty)
+*   Show all body summaries even if no notification
+    *   By default, Notification Aggregator will not show a body summary until a notification for that body arrives.
+        Turn this setting on to show all body summaries. Note that this will require a lot of scrolling in systems with many bodies.
+    *   Default: off.
+*   Font Size adjustment
+    *   Adjusts the font size (ie. zoom) relative to the current app-wide font size. Range is -5 - +10
+    *   Default: 0 (no zoom).
+
+## Integration guide for Plugin Authors
+
+The Notification Aggregator plugin's primary inputs are:
+*   A small subset of Journal events including:
+    *   FSDJump
+    *   Location
+    *   LoadGame
+    *   Loadout
+    *   FSSAllBodiesFound
+    *   FSSDiscoveryScan
+    *   FSSBodySignals
+    *   Scan
+    *   SAAScanComplete
+    *   Touchdown
+*   Notifications from other plugins.
+
+If you are a plugin author and would like your plugin to leverage all the features of the Notification Aggregator, please follow the guidelines below:
+
+*   Populate the fields in `NotificationArgs` with `NotificationRendering.All` or `.PluginNotifier` as follows:
+    *   For notifications associated with a body (ie. Scan):
+        *   Set the CoalescingId property to the BodyID from the Journal entry. CoalescingIds in the range 0 - 1000 are reserved for bodies.
+        *   I recommend setting the "Title" for such notifications to `Body ${BodyShortName}` (eg. "Body 1 a") to match the Summary name.
+            Titles which match the Body Summary name will be suppressed to provide visual grouping.
+    *   Additional Special CoalescingIds:
+        *   -2 Alerts
+        *   -1 System notifications
+        *   1001 Default "catch-all" which appear in the "Other notifications" group
+    *   For all notifications:
+        *   Provide additional helpful detail in the ExtendedDetails property. The content here is not included in any NativeVisual nor NativeVoice notifiers.
+        *   Set the Sender property to the short name of your plugin (the same value that appears on the plugin's Tab in the main window). This allows
+            Aggregator to focus your plugin when the button in the Sender column is clicked.
