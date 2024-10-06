@@ -5,7 +5,27 @@ description: Tool for reading/monitoring Elite Dangerous journals for interestin
 
 # Observatory Core Downloads
 
-## Latest - v1.0.4 - About Bugfixes
+## Latest - v1.1.0 - Centered and Signed
+
+Release versions:
+  * [Installer](https://github.com/Xjph/ObservatoryCore/releases/download/v1.1.0/ObservatorySetup.exe)
+  * [Portable](https://github.com/Xjph/ObservatoryCore/releases/download/v1.1.0/ObservatoryPortable.zip)
+
+One minor new feature in this one, hence the bump to 1.1.0 instead of 1.0.5. Native popup notifications now have centered location options available.
+
+Of important note in this release is that signature checked has had a fix which should now allow it to work at all, so users with additional plugins will see *one time* warnings about signature validation. You can choose to accept this and you will not see the warning again for that plugin, or preferably for any plugins by that author if the author is signing their plugins.
+
+For plugin authors there is an update to Framework which adds a `ThemeChanged` method to the plugin interface, allowing your plugins to immediately handle changes to the application theme.
+
+- Popup notifications now have cenetered location options
+- Settings should now persist across updates for the portable build
+- Added `ThemeChanged` method to `IObservatoryPlugin`
+- Fix issue where journal files with duplicate timestamp parts could cause application errors
+- Fix issue where sufficiently large on foot combat bond totals was not properly handled
+- Corrected behaviour when a plugin has overridden native notifications and another plugin specifies native notification only
+- Fix signature checks
+
+### v1.0.4 - About Bugfixes
 
 Release versions:
   * [Installer](https://github.com/Xjph/ObservatoryCore/releases/download/v1.0.4/ObservatorySetup.exe)
