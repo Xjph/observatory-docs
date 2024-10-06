@@ -1,0 +1,100 @@
+# Stat Scanner
+
+Stat Scanner is your own personal record book of personal bests but can also compares your discoveries against one of two sets of galactic records provided by edastro.com:
+
+*   Proc-Gen only galactic records -- no hand-placed objects are included as many of those have unbeatable records
+*   All galactic records -- including hand-placed objects.
+
+In addition to many of the biggest, smallest, fastest and slowest objects you've found, you can also track the number of undiscovered systems you have visited, how many regions you've visited, track codex discoveries by region and category, track how many Odyssey bios you've found in a single system or single body, and more. And more things are being added all the time.
+
+New personal bests can be notified (and if a single body triggers more than a configurable number; default is 3, only 1 notification is generated and details shown in the grid).
+
+I have plans to overhaul this plugin with a nicer UI.
+
+See the [Changelog page](https://github.com/fredjk-gh/ObservatoryPlugins/wiki/Plugin:-Stat-Scanner) for release notes and download links or install via the AutoUpdater.
+
+## Tips
+
+*   Changing most settings requires a read-all to take effect to re-generate the content stored in the plugins' internal database. If something didn't work, click `Read All` and see if it fixes it.
+*   When launching Observatory Core, it displays a summary of all your personal bests to date.
+*   After updating the plugin, you should:
+    *   Review new settings, make adjustments.
+    *   Run `Read All`.
+
+## Settings Explained
+
+There are a lot of Settings. Take a look at recommended settings (as of September 2024):
+import Image from 'next/image'
+
+![Settings for Stat Scanner](/statscanner-settings.png)
+*Settings for Stat Scanner*
+
+### General
+*   Records file usage: EDAstro provides a standard "everything" galactic records file AND a proc-gen only records file (Thanks to Cmdr Ovidius for creating the proc-gen file for this plugin!). The proc-gen only file does not contain hand-placed objects -- many of which hold unbreakable records. This makes finding records a fairer (and funner) game. These record files are updated at most once per week at startup. There are 3 options for how the plugin handles records:
+    *   Ignore proc-gen: Hardcore mode! Only look for new galactic records including un-beatable hand-placed objects.
+    *   Only use proc-gen records: Compare proc-gen bodies to proc-gen records. But if you visit a hand-place galactic record, mention it.
+    *   Use both: Proc-gen objects will be compared against both sets of records. Non-proc-gen objects will be compared against only Galactic records.
+*   Only consider 1st discovered objects: If it's already discovered? Who care about it! Only check records for stuff you found first!
+*   Track personal bests, Tallies and new Codex Entries: If you only want to compare against galactic records, leave this off. But you're missing out on most of the fun.
+
+### Notifications
+*  Notify [X]: Select what notifications you want to receive.
+    *   Note: Region Codex entries and Tallies can get noisy, so these default to off. However, see the next setting...
+*  Silently notify: If notifications are disabled for anything above, this will silently notify to anything listening.
+    *   Note: This will require a new release of Herald to correctly respect these notification settings.
+    *   Note: Once you have an updated version of Herald, the only thing that will see these notifications is my Aggregator plugin.
+
+### Tuning
+
+*  Near Maximum/Minimum record threshold %
+    *   These two settings control how the "near galactic record" behavior works. The plugin will inform you if you are within X% of a record based on these settings. In both cases, setting the value to 0 will disable the feature.
+    *   Maximum threshold % can be: 0 .. 10, increments of 1
+    *   Minimum threshold % can be: 0 .. 20, increments of 1
+    *   WARNING: Setting these values to non-zero values can generate a lot of hits! Start with 1 and see what you think before cranking it way up.
+*   Maximum personal best notifications per body: If a single body generates more than the configured number of notifications, only a single notification is generated although the details are still written to the grid. Minimum: 0, maximum: 20; default: 3.
+*   Common record tie frequency control: 
+    *   You might be able to tie a record. Some records are more likely to be tied (ie. it's a game-level maximum) and as a result, those records could trigger very frequently. However, EDAstro's data includes the # of objects known to have this maximum value -- so if there's more than X objects tied for this record, it's not really interesting, so we don't mention it.
+    *   Values can range from 1,000 .. 100,000. Lower values means less noise -- and you are only told about rarer, more interesting ties.
+*   All remaining Records, Personal bests/tallies options:
+    *   Check/Tally/Track [X]: Select what records, tallies, and personal bests you want to track.
+
+## Records, etc.
+
+The initial release of the plugin watches records for the following variables/attributes and body classes (as applicable):
+
+Planets:
+
+*   Planet Mass
+*   Planet Radius
+*   Surface Gravity
+*   Surface Pressure
+*   Odyssey bio count
+
+Planets and Stars:
+
+*   Orbital Eccentricity (where applicable)
+*   Orbital Period
+*   Ring Density
+*   Ring Mass
+*   Ring Outer Radius
+*   Ring Width
+*   Rotational Period
+*   Surface Temperature
+
+Stars:
+
+*   Star Mass
+*   Star Radius
+
+Regions:
+
+*   Codex confirmations per category
+*   Regions visited tally
+
+Systems:
+
+*   Max bodies count
+*   Odyssey bio count
+*   Undiscovered tally
+
+Got suggestions for something else? File an issue to suggest it.
