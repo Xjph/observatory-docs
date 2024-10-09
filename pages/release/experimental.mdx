@@ -1,0 +1,21 @@
+---
+title: EXPERIMENTAL Elite Observatory Core
+description: Experimental Builds of Elite Observatory Core
+---
+
+# Wine-Friendly Build
+
+## Latest - v1.1.0 - Centered and Signed
+
+Release versions:
+  * [Installer](https://xjph.net/Observatory/ObservatoryWineSetup.exe)
+
+This is an experimental and likely bug-riddled version with some build-time tweaks to improve compatability with Wine.
+
+**Wine 9.0+ is required.** Prior versions have issues with .NET 8. You may need to change the application config in Lutris if the default Wine environment is something older.
+
+For whatever reason it fails to correctly default to a valid audio device, if you want to hear [Herald](/usage/plugins/herald) notifications you will need to select the "Wine Audio Mapper" in the audio device dropdown on the core tab.
+
+Dark theme is a bit wonky, you will likely need to switch to light. This is also found at the bottom of the core tab.
+
+If you try this please let me know how it goes. I've only given it the most cursory of initial testing, basically just making sure it run.
