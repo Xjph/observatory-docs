@@ -5,7 +5,36 @@ description: Tool for reading/monitoring Elite Dangerous journals for interestin
 
 # Observatory Core Downloads
 
-## Latest - v1.1.0 - Centered and Signed
+## Latest - v1.1.1 - Make it Pop!
+
+Release versions:
+  * [Installer](https://github.com/Xjph/ObservatoryCore/releases/download/v1.1.1/ObservatorySetup.exe)
+  * [Portable](https://github.com/Xjph/ObservatoryCore/releases/download/v1.1.1/ObservatoryPortable.zip)
+
+> You can find a WINE-friendly build for use in linux on the [experimental build page](/release/experimental).
+
+Some more functionality for pop-up notifications in this one, with options for independent scaling of the text, and disabling the transparency effect. This latter option can improve the readability of the text in some situations, and may also serve as a workaround for some visual issues that had been reported with the popup notification.
+
+In addition there is now a `/nomin` command line argument which will prevent Observatory from starting minimized. This too is a workaround for some strange behaviour that was discovered when launching Observatory via min-ed-launcher. For those of you using that you can update the Observatory entry in your ed-min-launcher settings.json file and add `"arguments": "/nomin"` to the Observatory entry in the processes array. E.g.:
+
+```json
+"processes": 
+  [
+    {
+      "fileName": "C:\\Program Files\\Elite Observatory\\ObservatoryCore.exe",
+      "arguments": "/nomin"
+    }
+  ]
+```
+
+- Add `/nomin` launch option
+- Send notification from explorer individually when multiple criteria trigger on a single body
+- Potential minor performance improvement to grouped item handling
+- New setting for popup notification font scale
+- New setting for popup notification transparency
+
+
+### v1.1.0 - Centered and Signed
 
 Release versions:
   * [Installer](https://github.com/Xjph/ObservatoryCore/releases/download/v1.1.0/ObservatorySetup.exe)
