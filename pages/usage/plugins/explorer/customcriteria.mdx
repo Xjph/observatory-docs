@@ -296,11 +296,15 @@ You can use `string.format` for greater control over the display of numbers than
 `string.format` accepts a string as its first argument into which you want to insert your formatted values using a set of placeholder tokens to denote where those values will be placed and how to format them, followed by the value(s) to insert. 
 
 A simple example: 
-`Luastring.format('Temperature: %f K, Pressure: %fPa', scan.SurfaceTemperature, scan.SurfacePressure)`
+```lua
+string.format('Temperature: %f K, Pressure: %fPa', scan.SurfaceTemperature, scan.SurfacePressure)
+```
 
 This results in a string similar to "Temperature: 42.87649 K, Pressure: 15.32398Pa". Generally you won't need that level of precision in your output, so you can further refine that with something like: 
 
-`Luastring.format('Temperature: %.1f K, Pressure: %.1fPa', scan.SurfaceTemperature, scan.SurfacePressure)`
+```lua
+string.format('Temperature: %.1f K, Pressure: %.1fPa', scan.SurfaceTemperature, scan.SurfacePressure)
+```
 
 Which limits the output to a single decimal place, resulting in "Temperature: 42.9 K, Pressure: 15.3Pa" for the same input. Notice that the output is *rounded*, rather than being truncated.
 
@@ -324,7 +328,9 @@ A `+` can be prefixed to explicity include the positive sign in your output. For
 
 Finally, all of these can be combined to simultaneously specify sign, padding, and decimal precision:
 
-`string.format('Ascending node: %+06.1f°', scan.AscendingNode)`
+```lua
+string.format('Ascending node: %+06.1f°', scan.AscendingNode)
+```
 
 This results in an explictly signed number to one decimal place zero-padded to 6 characters (including the sign and decimal point):
 
