@@ -1,0 +1,35 @@
+# Archivist
+
+The Archivist plugin captures exploration related journals and stores them in a database for later re-use either by re-sending journal entries to other plugins or by allowing you to search/browse the journal entries yourself (pretty printed) and copy them out for other uses.
+
+The themable UI features a tabbed control with two tabs:
+
+*   "Current System": Shows the current system, commander and the latest captured journal entry (pretty printed). From here, you can open a separate JSON viewer window or open the system in the Search tab to view other records.
+*   "Search": Allows you to search the database for a particular system or journal entry.
+    *   Enter a system name in the "Find System" box and press enter to search.
+    *   Enter text into the "Text Filter" box to find specific entries within the results for a system (ie. to find only a specific body or journal type)
+    *   If the system has been visited by more than one commander, use the "Commander Filter" to select a particular commander's results.
+    The results view has a context menu allowing you to open a particular entry in a pop-out viewer or copy it to the clipboard.
+    There is also a list of recently visited systems by the current commander from which you can pick a system to search for.
+    At the bottom, there is a "Resend All" button which tells Core to resend all records for the system to ALL enabled plugins. NOTE: Resending records is experimental and can mess with things. See the tip below for how to avoid notification spam.
+
+Below the tab panel is a convenient settings button (to avoid having to switch to the Core tab to change a setting).
+
+Multiple commanders are supported.
+
+import Image from 'next/image'
+
+![A sample view of Archivist](/archivist-example.png)
+*A sample view from Archivist.*
+
+See the [Changelog page](https://github.com/fredjk-gh/ObservatoryPlugins/wiki/Plugin:-Archivist) for release notes and download links or install via the AutoUpdater.
+
+## Settings
+
+There's only 1 setting here at the moment and it's not currently functional. In the future, this will control if Archivist sends records for known systems via the plugin message bus to plugins who may want to re-hydrate data from these records. Currently highly experimental.
+
+## Tips
+
+*  Resending records is highly experimental; use with caution. It can spawn dozens of notifications and mess up stored data for other plugins. I recommend disabling (using the checkboxes in Core's plugin list) any plugins you don't want results from and maybe even disabling notifications. You may have to re-read all to fix things after resending records. Your mileage may vary.
+*  In fact, consider disabling Archivist itself, to avoid it ingesting duplicate records. **Known issue; fixed in next release.**
+

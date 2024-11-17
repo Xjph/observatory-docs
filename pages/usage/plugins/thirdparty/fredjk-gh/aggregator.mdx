@@ -20,11 +20,12 @@ import Image from 'next/image'
 *   A "jump to plugin" feature -- Click on the plugin name in the "Sender" column to focus the plugin which generated
     the notification.
 *   Supports multiple commanders.
+*   Is themeable to a degree.
 
-The ✅ or "Interest Tracking" column allows you to mark notifications with intent to visit. Click the 🔍 icon to mark
-something as interesting and it becomes an empty checkbox. When you've visited the body, click the empty checkbox to
-check it off (✅). If you map the body or land on it, it will automatically be checked off for you. Note that this
-state is not persisted.
+The ✅ or "Interest Tracking" column allows you to mark notifications with intent to visit.
+*   While FSSing the system, target a body to mark it as interesting. Alternatively, you can manually click the 🔍 icon to mark something as interesting. When marked, the column displays an empty checkbox icon (denoting it as something to do).
+*   When you've either DSSed or landed on a marked body, the empty checkbox will automatically be checked (✅). Alternatively, click the empty checkbox to check it. Note that this marked completed state is not persisted.
+*   In any state, right-clicking the column will reset to the default state (🔍). Clicking on an already completed item will also cycle back to the initial state.
 
 See the [Changelog page](https://github.com/fredjk-gh/ObservatoryPlugins/wiki/Plugin:-Aggregator) for release notes and download links or install via the AutoUpdater.
 

@@ -213,6 +213,12 @@ Can be set by notification plugins to indicate that Observatory native popup not
 
 If omitted native popup notifications are not suppressed.
 
+### `bool OverrideAcceptNotificationsDuringBatch { get; }` (Optional)
+
+Can be set by notification plugins to indicate that it would like to receive notifications during batch read operations (eg. pre-read and read-all). The default is `false`, meaning, the plugin will only receive notifications during realtime monitoring.
+
+NOTE: Be cautious about enabling this. During a Read-All operation, you could receive thousands of notifications. If your plugin sends notifications via a third party service or displays popup notifications or plays sounds, this can cause undesireable results.
+
 ## `IObservatoryComparer : System.Collections.IComparer`
 
 ### `int SortColumn { get; set; }`
