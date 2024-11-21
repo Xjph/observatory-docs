@@ -5,7 +5,33 @@ description: Tool for reading/monitoring Elite Dangerous journals for interestin
 
 # Observatory Core Downloads
 
-## Latest - v1.1.4 - Non-Blocking Error
+## Latest - v1.2.0 - Pop and Lock
+
+Release versions:
+  * [Currently Available to Patreon backers only](https://www.patreon.com/posts/116456767), general release for all Sunday night at midnight UTC.
+
+Verion 1.2.0 is a significant UI refactor based on post 1.0 feedback and a number of long standing requests. The "Core" tab has been completely reworked to present the plugin list in a more useful fashion, and each has its own menu button for common functionality rather than the unintuitive need to select items before hitting the buttons below. Core application settings have also moved out into their own window to reduce core tab clutter.
+
+Also, of particular note is native support for popping plugin tabs out into separate windows, which is a request that goes almost as far back as the initial release of Observatory Core.
+
+Finally, this update unfortunately _removes_ the Observatory Herald plugin from the installation bundle. A recent increse in popularity of both Observatory and Elite Dangerous in particular led to a significant increase in costs for the Azure-provided voices and it was no longer sustainable to cover those costs myself. In lieu of Herald voices a long standing issue where native voice notifications do not show all installed Windows voices has been fixed. Herald will likely return in the future as a Patreon backer perk.
+
+- Refactored "Core" tab
+  - New plugin list
+  - Plugins which fail to load will now still be listed with a status of "Error"
+  - Plugin-specific actions have been moved from separate buttons to a menu button on the plugin list
+  - Application settings are now found through the "Core Settings" button instead of displayed at all times
+  - Basic monitoring stats added to the bottom of the tab
+- Implemented plugin "popout" feature
+- Added right-click context menu to plugin tabs with "popout", "settings", and "open data folder" options
+- Botanist now displays distance from previous biological samples on its overlay popup
+- Explorer custom criteria expanded with new annotations for handling more events, for details see [the custom criteria documentation](/usage/plugins/explorer/customcriteria#other-events)
+- Expand native voice selection
+- Fix issue where having no audio devices could cause a crash on startup
+- Fix issue where starting minimised would cause errors (`/nomin` startup option no longer required for min-ed-launcher users)
+- Added list of patreon supporters to "about" info
+
+### v1.1.4 - Non-Blocking Error
 
 Release versions:
   * [Installer](https://github.com/Xjph/ObservatoryCore/releases/download/v1.1.4/ObservatorySetup.exe)
