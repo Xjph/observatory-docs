@@ -1,0 +1,9 @@
+{
+    "fredjk-autoupdater": "AutoUpdater",
+    "aggregator": "Aggregator",
+    "archivist": "Archivist",
+    "fleetcommander": "Fleet Commander",
+    "helm": "Helm",
+    "prospector": "Prospector",
+    "statscanner": "Stat Scanner"  
+}

@@ -10,7 +10,7 @@ The object must contain two top level properties, `Name`, which is simply the na
 
 In addition to the two default colour properties you can add an arbitrary number of additional colours for any type of Windows Form control and colour property thereof. Most will just have `{Type}.BackColor` and `{Type}.ForeColor`, though some have more, e.g. `LinkLabel.ActiveLinkColor`.
 
-The colour property itself can be either a named Windows colour, such as `Blue`, `Fuchsia`, or `ButtonFace`. Alternatively an RGB value can be specified as three separate `R`, `G`, and `B` components, such as `"R":128,"G":64,"B":128`.
+The colour property itself can be either a [named Windows colour](https://learn.microsoft.com/en-us/dotnet/api/system.windows.media.colors?view=windowsdesktop-8.0), such as `Blue`, `Fuchsia`, or `ButtonFace`. Alternatively an RGB value can be specified as three separate `R`, `G`, and `B` components, such as `"R":128,"G":64,"B":128`.
 
 Control types and property names *are case sensitive*.
 
@@ -40,18 +40,18 @@ The following is a sample theme, replicating the classic Windows 3.1 colour them
         },
         "LinkLabel.DisabledLinkColor": {
             "R": 0,
-            "B": 0,
-            "G": 200
+            "G": 200,
+            "B": 0
         },
         "LinkLabel.LinkColor": {
             "R": 0,
-            "B": 0,
-            "G": 200
+            "G": 200,
+            "B": 0
         },
         "LinkLabel.VisitedLinkColor": {
             "R": 0,
-            "B": 0,
-            "G": 133
+            "G": 133,
+            "B": 0
         },
         "PluginListView.BackColor": {
             "Name": "Yellow"
@@ -91,4 +91,4 @@ The following is a sample theme, replicating the classic Windows 3.1 colour them
 
 ```
 
-For a list of additional Windows Forms controls which may be used please refer to either the [official Microsoft documentation](https://learn.microsoft.com/en-us/dotnet/desktop/winforms/controls/controls-to-use-on-windows-forms) or simply ask myself or the author of the appropriate plugin what controls were used.
+For a list of additional Windows Forms controls which may be used please refer to either the [official Microsoft documentation](https://learn.microsoft.com/en-us/dotnet/desktop/winforms/controls/controls-to-use-on-windows-forms) or look at a [generated list of control names](themes/themes-controllist.mdx) or simply ask myself or the author of the appropriate plugin what controls were used.
