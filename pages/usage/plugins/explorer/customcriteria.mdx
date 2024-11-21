@@ -316,7 +316,6 @@ Handles the `FSDJump` journal event which contains the following travel and expl
 ```lua
 -- Simple example storing galaxy coordinates for use in other criteria.
 ---@Jump
-  
   starX = jump.StarPos.X
   starY = jump.StarPos.Y
   starZ = jump.StarPos.Z
@@ -335,7 +334,7 @@ Handles the `FSSAllBodiesFound` journal event which indicates all system bodies 
 ```lua
 -- Records number of bodies in current system to a table
 ---@AllBodies
-fullyScanned.insert(allBodies.SystemName, allBodies.Count)
+  fullyScanned.insert(allBodies.SystemName, allBodies.Count)
 ---@End
 ```
 
@@ -385,7 +384,7 @@ Handles the `FSSDiscoveryScan` event which occurs after performing the initial F
 ```lua
 ---@Discovery
 -- HONK
-notify("🪿", "Honk!", string.format("%i bodies in %s", discovery.BodyCount, discovery.SystemName))
+  notify("🪿", "Honk!", string.format("%i bodies in %s", discovery.BodyCount, discovery.SystemName))
 ---@End
 ```
 
