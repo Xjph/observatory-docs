@@ -308,7 +308,11 @@ Handles the `FSDJump` journal event which contains the following travel and expl
 - `jump.JumpDist` (float): Distance jumped
 - `jump.FuelUsed` (float): Fuel used
 - `jump.FuelLevel` (float): Fuel remaining after jump
-- `jump.BoostUsed` (int): If present indicates type of boost used for jump. 3 - Premium Synthesis, 4 - Neutron Star, need to confirm other values.
+- `jump.BoostUsed` (int): If present indicates type of boost used for jump. 
+  - 1 - Basic Synthesis (x1.25)
+  - 2 - Standard Synthesis or White Dward (x1.5)
+  - 3 - Premium Synthesis (x2)
+  - 4 - Neutron Star (x4)
 
 > In addition to these values the jump event contains information about system economy, government, etc. For the complete details refer to the event description in [Frontier's journal documentation](https://forums.frontier.co.uk/threads/journal-docs-for-odyssey-release.575010/), or [Observatory's source repo](https://github.com/Xjph/ObservatoryCore/blob/master/ObservatoryFramework/Files/Journal/Travel/FSDJump.cs).
 
