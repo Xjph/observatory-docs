@@ -289,6 +289,118 @@ end
 ---@End
 ```
 
+## Other Events
+
+As of Explorer 1.1 (included with Observatory 1.2) additional events can be handled by custom criteria. Each of these has its own annotation for defining its handler function. These can either be used to populate global variables that are subsequently used by other criteria, or send their own notifications directly.
+
+### Jump
+
+Handles the `FSDJump` journal event which contains the following travel and exploration related values:
+
+- `jump.StarSystem` (string): Name of target system.
+- `jump.SystemAddress` (ulong): 64-bit unsigned integer uniquely identifying the current system.
+- `jump.StarPos.X` (float): X-coordinate of system
+- `jump.StarPos.Y` (float): Y-coordinate of system
+- `jump.StarPos.Z` (float): Z-coordinate of system
+- `jump.Body` (string): Name of arrival body
+- `jump.BodyID` (int): ID of arrival body
+- `jump.BodyType` (string): Type of arrival body
+- `jump.JumpDist` (float): Distance jumped
+- `jump.FuelUsed` (float): Fuel used
+- `jump.FuelLevel` (float): Fuel remaining after jump
+- `jump.BoostUsed` (int): If present indicates type of boost used for jump. 3 - Premium Synthesis, 4 - Neutron Star, need to confirm other values.
+
+> In addition to these values the jump event contains information about system economy, government, etc. For the complete details refer to the event description in [Frontier's journal documentation](https://forums.frontier.co.uk/threads/journal-docs-for-odyssey-release.575010/), or [Observatory's source repo](https://github.com/Xjph/ObservatoryCore/blob/master/ObservatoryFramework/Files/Journal/Travel/FSDJump.cs).
+
+
+```lua
+-- Simple example storing galaxy coordinates for use in other criteria.
+---@Jump
+  
+  starX = jump.StarPos.X
+  starY = jump.StarPos.Y
+  starZ = jump.StarPos.Z
+---@End
+
+```
+
+### AllBodies
+
+Handles the `FSSAllBodiesFound` journal event which indicates all system bodies have now been scanned. Contains the following values:
+
+- `allBodies.SystemName` (string): Name of system.
+- `allBodies.SystemAddress` (ulong): 64-bit unsigned integer uniquely identifying the current system.
+- `allBodies.Count` (int): Number of bodies in system.
+
+```lua
+-- Records number of bodies in current system to a table
+---@AllBodies
+fullyScanned.insert(allBodies.SystemName, allBodies.Count)
+---@End
+```
+
+### BodySignals
+
+Handles the `SAASignalsFound` event which occurs after surface scanning a body. Contains the following values:
+
+- `bodySignals.SystemAddress` (ulong): 64-bit unsigned integer uniquely identifying the current system.
+- `bodySignals.BodyName` (string): Name of scanned body.
+- `bodySignals.BodyID` (int): ID of scanned body.
+- `bodySignals.Signals.Count` (int): Number of signal types found
+- `bodySignals.Signals[x].Type` (string): Internal (non-localised) name of signal type, e.g.: "$SAA_SignalType_Guardian;"
+- `bodySignals.Signals[x].Type_Localised` (string): Name of signal type localised for player locale, e.g.: "Guardian"
+- `bodySignals.Signals[x].Count` (int): Total number of this signal type
+- `bodySignals.Genuses.Count` (int): Number of biological genuses found
+- `bodySignals.Genuses[x].Genus` (string): Internal (non-localised) name of genus, e.g.: "$Codex_Ent_Stratum_Genus_Name"
+- `bodySignals.Genuses[x].Genus_Localised` (string): Name of genus localised for player locale, e.g.: "Stratum"
+
+> Note: `Signals` and `Genuses` are zero-indexed .NET Lists.
+
+```lua
+-- Notifies if you find bacteria
+---@BodySignals
+if bodySignals.Genuses then
+	for i = 0, bodySignals.Genuses.Count - 1 do
+		if bodySignals.Genuses[i].Genus == "$Codex_Ent_Bacterial_Genus_Name;" then
+			notify(
+        "Bacteria Found", 
+        bodySignals.BodyName, 
+        "Why are you even notifying for this?")
+		end
+	end
+end
+---@End
+```
+
+### Discovery
+
+Handles the `FSSDiscoveryScan` event which occurs after performing the initial FSS "honk". Contains the following values:
+
+- `discovery.SystemName` (string): Name of system
+- `discovery.SystemAddress` (ulong): 64-bit unsigned integer uniquely identifying the current system
+- `discovery.BodyCount` (int): Number of bodies in system
+- `discovery.NonBodyCount` (int): Number of non-body locations found by scan
+- `discovery.Progress` (float): Percentage of system already scanned.
+
+```lua
+---@Discovery
+-- HONK
+notify("🪿", "Honk!", string.format("%i bodies in %s", discovery.BodyCount, discovery.SystemName))
+---@End
+```
+
+### Notifications
+
+Explorer 1.1 also adds a new function for sending arbitraray notifications from custom criteria. These are both added to the Explorer results table and sent out to notifier plugins.
+
+The function signature is `notify(string title, string detail, string extendedDetail)`.
+
+`title` is used as the title/header of notification and also appears in the "Body Name" column in the UI.
+
+`detail` is the body of the notification and in the "Description" column of the UI.
+
+`extendedDetail` is additional notification detail that does not typically appear in popup or voice notifications, but may be handled by other notifier plugins. It is displayed in the "Details" column of the UI.
+
 ## Formatting Strings
 
 You can use `string.format` for greater control over the display of numbers than the simple "largest whole number" approach of `math.floor`.
