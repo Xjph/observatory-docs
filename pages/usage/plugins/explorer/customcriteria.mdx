@@ -299,9 +299,9 @@ Handles the `FSDJump` journal event which contains the following travel and expl
 
 - `jump.StarSystem` (string): Name of target system.
 - `jump.SystemAddress` (ulong): 64-bit unsigned integer uniquely identifying the current system.
-- `jump.StarPos.X` (float): X-coordinate of system
-- `jump.StarPos.Y` (float): Y-coordinate of system
-- `jump.StarPos.Z` (float): Z-coordinate of system
+- `jump.StarPos.x` (float): X-coordinate of system
+- `jump.StarPos.y` (float): Y-coordinate of system
+- `jump.StarPos.z` (float): Z-coordinate of system
 - `jump.Body` (string): Name of arrival body
 - `jump.BodyID` (int): ID of arrival body
 - `jump.BodyType` (string): Type of arrival body
@@ -320,9 +320,9 @@ Handles the `FSDJump` journal event which contains the following travel and expl
 ```lua
 -- Simple example storing galaxy coordinates for use in other criteria.
 ---@Jump
-  starX = jump.StarPos.X
-  starY = jump.StarPos.Y
-  starZ = jump.StarPos.Z
+  starX = jump.StarPos.x
+  starY = jump.StarPos.y
+  starZ = jump.StarPos.z
 ---@End
 
 ```
