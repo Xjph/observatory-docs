@@ -1,4 +1,32 @@
-# Notifications
+# Core Settings Window
+
+![Core Settings](/core-settings.png)
+
+## Core Settings
+
+![Core Settings Panel](/core-settings-panel.png)
+
+This section controls the general behaviour of Observatory and functionality not specific to any plugin.
+
+* **Journal Folder:** Shows the location your journal files are currently being read from. Double-clicking the path will allow you to select a new one, but this should be unnecessary in the overwhelming majority of cases.
+
+* **Export Format:** Chooses the format of exported files between tab-separated `.csv` and office open XML `.xlsx` (commonly referred to as excel format). Plugins can override this selection and export in other formats if necessary.
+
+* **Theme:** Select the visual theme for the application. Support for different themes within plugins may vary.
+
+* **Add Theme:** Allows users to add their own custom themes. See [the custom theme documentation](/usage/themes) for details.
+
+* **Volume:** Adjust volume of audible notifications and sounds played by plugins.
+
+* **Audio Device:** Selects the audio output device used for all sounds.
+
+* **Start Monitor On Launch:** Enables realtime monitoring automatically as soon as Observatory is launched.
+
+* **Read All On Launch:** Immediately performs a full read of all journals as soon as Observatory is launched.
+
+* **Config Folder:** Opens the folder where Observatory's main application config is stored. Useful in the event that settings have become somehow corrupted, or a quick reset to all defaults settings is desired.
+
+## Notifications
 
 Observatory is able to notify you of the data it reads, without having to directly look at the application. 
 
@@ -9,7 +37,7 @@ There are two methods of notification available:
 
 Notifications (whether popups or voice) will trigger simultaneously upon finding a point of interest: The exact things Observatory notifies you of can be customised with [plugins](/usage/plugins).
 
-## Popup Notifications
+### Popup Notifications
 
 ![A notification example.](/notification-example.png)
 
@@ -27,7 +55,11 @@ This block of settings controls the appearance and behaviour of the built-in "to
 
 * **Scale:** Adjust the size of the notifications, as a percentage of default, from 1% to 500%.
 
+* **Font Scale:** Adjust the size of the displayed text within the notification.
+
 * **Duration:** Adjust the length of time a notification remains on screen, in milliseconds. Some plugins may override this.
+
+* **Transparency:** Select whether the notification background is a transparent acrylic blur, or opaque.
 
 * **Colour:** Select the colour used for the text and border of the pop-up.
 
@@ -35,13 +67,13 @@ This block of settings controls the appearance and behaviour of the built-in "to
 
 * **Enabled:** Turn pop-up notifications on or off.
 
-## Voice Notifications
+### Voice Notifications
 
 > **Note:** Voice notifications can be overridden in their entirety by notifications plugins. When this happens these settings are unavailable and replaced with a message indicating which plugin has done so.
 
 This block of settings controls the appearance and behaviour of the built-in voice notifications. These notifications use basic Windows text-to-speech. In a default Observatory installation they are overridden by [Herald](/usage/plugins/herald) which provides much higher quality voices.
 
-![Popup Notification Settings](/popup-settings.png)
+![Voice Notification Settings](/voice-settings.png)
 
 * **Speed:** Adjust the rate at which the notification speaks.
 
@@ -51,6 +83,6 @@ This block of settings controls the appearance and behaviour of the built-in voi
 
 * **Enabled:** Turn voice notifications on or off.
 
-## Plugin Notifications
+### Plugin Notifications
 
-Plugins are able to implement their own notification types, or replace the existing native popup or voice notifications. The specifics of how they function will be specific to the particular plugin providing those notifications. One such notification which is bundled with Observatory is [Herald](/usage/plugins/herald).
+Plugins are able to implement their own notification types, or replace the existing native popup or voice notifications. The specifics of how they function will be specific to the particular plugin providing those notifications.
