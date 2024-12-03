@@ -1,6 +1,7 @@
 import React from 'react'
 import { DocsThemeConfig } from 'nextra-theme-docs'
 import { useConfig } from 'nextra-theme-docs'
+import { Analytics } from '@vercel/analytics/react'
 
 const config: DocsThemeConfig = {
   logo: <span>Elite Observatory</span>,
@@ -17,6 +18,7 @@ const config: DocsThemeConfig = {
         <a className="nx-text-primary-600 nx-underline" href="https://www.patreon.com/bePatron?u=74828821">Become a member on Patreon!</a>
         <br/>- or -<br/>
         <a className="nx-text-primary-600 nx-underline" href="https://www.paypal.com/donate/?hosted_button_id=XYQWYQ337TBP4">Donate via Paypal!</a>
+        <Analytics/>
       </span>
     ),
   },
