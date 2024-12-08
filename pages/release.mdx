@@ -7,66 +7,31 @@ description: Tool for reading/monitoring Elite Dangerous journals for interestin
 
 ## Latest 
 
-### v1.2.2 - Sizing It Up
+### v1.2.4 - Count++
 
 Release versions:
-  * [Installer](https://github.com/Xjph/ObservatoryCore/releases/download/v1.2.2/ObservatorySetup.exe)
-  * [Portable](https://github.com/Xjph/ObservatoryCore/releases/download/v1.2.2/ObservatoryPortable.zip)
+  * [Installer](https://github.com/Xjph/ObservatoryCore/releases/download/v1.2.4/ObservatorySetup.exe)
+  * [Portable](https://github.com/Xjph/ObservatoryCore/releases/download/v1.2.4/ObservatoryPortable.zip)
 
-A quick bug fix for two small issues which most people may never notice, but are _critically debilitating_ if you're affected by them.
+~~Three, count them, _three_ bugfix releases since 1.2.0!~~
 
-- Fixes sizing issue on some lower resolution displays
-- Restores functionality to change journal path by double-clicking journal folder location
+Some small issues were identified with 1.2.3, so we're up to four!
 
-### v1.2.1 - For All
+Simple audio chimes are now available for notifications as well, for those who wanted some kind of audio alert, but didn't care to have them spoken.
 
-Release versions:
-  * [Installer](https://github.com/Xjph/ObservatoryCore/releases/download/v1.2.1/ObservatorySetup.exe)
-  * [Portable](https://github.com/Xjph/ObservatoryCore/releases/download/v1.2.1/ObservatoryPortable.zip)
+This update also includes a refactor of the plugin settings window. It should now be somewhat more compact and behave better on differently sized displays.
 
-This is the public release of v1.2.0 and also fixes several bugs which were identified with that version.
-
-Enjoy!
-
-#### v1.2.0 Release Notes
-
-Version 1.2.0 is a significant UI refactor based on post 1.0 feedback and a number of long standing requests. The "Core" tab has been completely reworked to present the plugin list in a more useful fashion, and each has its own menu button for common functionality rather than the unintuitive need to select items before hitting the buttons below. Core application settings have also moved out into their own window to reduce core tab clutter.
-
-> **IMPORTANT:** This update breaks compatibility with many plugins. It will be necessary to update them before they will work correctly.
-
-Also, of particular note is native support for popping plugin tabs out into separate windows, which is a request that goes almost as far back as the initial release of Observatory Core.
-
-Finally, this update unfortunately _removes_ the Observatory Herald plugin from the installation bundle. A recent increase in popularity of both Observatory and Elite Dangerous in particular led to a significant increase in costs for the Azure-provided voices and it was no longer sustainable to cover those costs myself. In lieu of Herald voices a long standing issue where native voice notifications do not show all installed Windows voices has been fixed. Herald will likely return in the future as a Patreon backer perk.
-
-- Refactored "Core" tab
-  - New plugin list
-  - Plugins which fail to load will now still be listed with a status of "Error"
-  - Plugin-specific actions have been moved from separate buttons to a menu button on the plugin list
-  - Application settings are now found through the "Core Settings" button instead of displayed at all times
-  - Basic monitoring stats added to the bottom of the tab
-- Implemented plugin "popout" feature
-- Added right-click context menu to plugin tabs with "popout", "settings", and "open data folder" options
-- Botanist now displays distance from previous biological samples on its overlay popup
-- Explorer custom criteria expanded with new annotations for handling more events, for details see [the custom criteria documentation](/usage/plugins/explorer/customcriteria#other-events)
-- Expand native voice selection
-- Fix issue where having no audio devices could cause a crash on startup
-- Fix issue where starting minimised would cause errors (`/nomin` startup option no longer required for min-ed-launcher users)
-- Added list of patreon supporters to "about" info
-- No longer check or enforce plugin signing
-
-#### v1.2.1 Bug Fixes
-
-- Fixes scaling issues in several places when display scaling was not set to 100%
-- Correctly saves and restores if plugins have been disabled
-- Added warning when enabling an out of date plugin
-- Fix issue where the panel content left behind when a plugin was popped out would not resize with the application window
-- Prevent single plugins with both "worker" and "notifier" interfaces from being listed twice
-- Save locations of popout windows when they are closed and re-opened
-- Ignore and proceed in odd edge case where the crash log could not be written to prevent actual error from being masked by crash log write failure
-- Add a placeholder "no devices present" entry for the audio dropdown when no audio devices are present at all
-- Stop processing of new "Jump", "Discovery", "BodySignals", and "AllBodies" custom journal processing when custom criteria are disabled
-- Correct issue where plugins could no longer correctly set plugin focus when target plugin was popped out
-
+- Added "Chime" option for audio notifications
+- Major refactor of plugin settings window
+- Fix an issue where numeric plugin settings could cause an error if they specified a minimum value above 0 (fredjk)
+- Added `DirectoryInfo` as a valid datatype for plugin settings
+- Corrected behaviour for internally focusing a plugin while popped out (fredjk)
+- Restore missing "Plugin Folder" button
+- Corrected handling of application audio to not mess with windows mixer
+- Update behaviour when installing plugin from double-click of .eop file to automatically restart Observatory
+- Expanded framework notifier interface to include necessary information for persisted notifications
+- (1.2.4) Fix an issue in Botanist where re-played journals without accompanying Status file data could cause errors
+- (1.2.4) Relax "on screen" requirement when restoring plugin popout locations to be in line with those of the main window
 
 ## Previous Versions
 

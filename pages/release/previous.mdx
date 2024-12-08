@@ -5,6 +5,38 @@ description: Tool for reading/monitoring Elite Dangerous journals for interestin
 
 # Observatory Core Downloads
 
+## v1.2.2 - Sizing It Up
+
+Release versions:
+  * [Installer](https://github.com/Xjph/ObservatoryCore/releases/download/v1.2.2/ObservatorySetup.exe)
+  * [Portable](https://github.com/Xjph/ObservatoryCore/releases/download/v1.2.2/ObservatoryPortable.zip)
+
+A quick bug fix for two small issues which most people may never notice, but are _critically debilitating_ if you're affected by them.
+
+- Fixes sizing issue on some lower resolution displays
+- Restores functionality to change journal path by double-clicking journal folder location
+
+## v1.2.1 - For All
+
+Release versions:
+  * [Installer](https://github.com/Xjph/ObservatoryCore/releases/download/v1.2.1/ObservatorySetup.exe)
+  * [Portable](https://github.com/Xjph/ObservatoryCore/releases/download/v1.2.1/ObservatoryPortable.zip)
+
+This is the public release of v1.2.0 and also fixes several bugs which were identified with that version.
+
+Enjoy!
+
+- Fixes scaling issues in several places when display scaling was not set to 100%
+- Correctly saves and restores if plugins have been disabled
+- Added warning when enabling an out of date plugin
+- Fix issue where the panel content left behind when a plugin was popped out would not resize with the application window
+- Prevent single plugins with both "worker" and "notifier" interfaces from being listed twice
+- Save locations of popout windows when they are closed and re-opened
+- Ignore and proceed in odd edge case where the crash log could not be written to prevent actual error from being masked by crash log write failure
+- Add a placeholder "no devices present" entry for the audio dropdown when no audio devices are present at all
+- Stop processing of new "Jump", "Discovery", "BodySignals", and "AllBodies" custom journal processing when custom criteria are disabled
+- Correct issue where plugins could no longer correctly set plugin focus when target plugin was popped out
+
 ## v1.2.0 - Pop and Lock
 
 Release versions:
