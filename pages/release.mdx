@@ -7,31 +7,25 @@ description: Tool for reading/monitoring Elite Dangerous journals for interestin
 
 ## Latest 
 
-### v1.2.4 - Count++
+### v1.2.5 - Pop a Tab
 
 Release versions:
-  * [Installer](https://github.com/Xjph/ObservatoryCore/releases/download/v1.2.4/ObservatorySetup.exe)
-  * [Portable](https://github.com/Xjph/ObservatoryCore/releases/download/v1.2.4/ObservatoryPortable.zip)
+  * [Installer](https://github.com/Xjph/ObservatoryCore/releases/download/v1.2.5/ObservatorySetup.exe)
+  * [Portable](https://github.com/Xjph/ObservatoryCore/releases/download/v1.2.5/ObservatoryPortable.zip)
 
-~~Three, count them, _three_ bugfix releases since 1.2.0!~~
+Some asked for improvements of plugin tabs and popouts are now implemented. Most notably tabs can now be re-ordered by dragging them with the mouse. 
 
-Some small issues were identified with 1.2.3, so we're up to four!
+Additionally popped out plugins now remember their popped out nature and should pop themselves back out again on Observatory launch. 
 
-Simple audio chimes are now available for notifications as well, for those who wanted some kind of audio alert, but didn't care to have them spoken.
+Finally, the UI should spend less time in an awkward half-drawn state during startup, this is most noticable when doing a read-all on launch, but should also be a marked improvment in general.
 
-This update also includes a refactor of the plugin settings window. It should now be somewhat more compact and behave better on differently sized displays.
-
-- Added "Chime" option for audio notifications
-- Major refactor of plugin settings window
-- Fix an issue where numeric plugin settings could cause an error if they specified a minimum value above 0 (fredjk)
-- Added `DirectoryInfo` as a valid datatype for plugin settings
-- Corrected behaviour for internally focusing a plugin while popped out (fredjk)
-- Restore missing "Plugin Folder" button
-- Corrected handling of application audio to not mess with windows mixer
-- Update behaviour when installing plugin from double-click of .eop file to automatically restart Observatory
-- Expanded framework notifier interface to include necessary information for persisted notifications
-- (1.2.4) Fix an issue in Botanist where re-played journals without accompanying Status file data could cause errors
-- (1.2.4) Relax "on screen" requirement when restoring plugin popout locations to be in line with those of the main window
+- Improve UX of initial UI load
+- Popouts now remembered
+- Tab re-ordering
+- Implement duplicate title suppression for native voice notifications (fredjk)
+- Fix naming of bespoke body names by Explorer (Earth isn't a primary star!) (fredjk)
+- Improve Framework handling of unrecognized values for enums
+- Tweak intra-plugin messaging to allow destination to be specified, prevent senders from receiving their own message, and prevent duplicate receiving by dual-role plugins. (Matt G)
 
 ## Previous Versions
 

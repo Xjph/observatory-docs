@@ -5,6 +5,32 @@ description: Tool for reading/monitoring Elite Dangerous journals for interestin
 
 # Observatory Core Downloads
 
+## v1.2.4 - Count++
+
+Release versions:
+  * [Installer](https://github.com/Xjph/ObservatoryCore/releases/download/v1.2.4/ObservatorySetup.exe)
+  * [Portable](https://github.com/Xjph/ObservatoryCore/releases/download/v1.2.4/ObservatoryPortable.zip)
+
+~~Three, count them, _three_ bugfix releases since 1.2.0!~~
+
+Some small issues were identified with 1.2.3, so we're up to four!
+
+Simple audio chimes are now available for notifications as well, for those who wanted some kind of audio alert, but didn't care to have them spoken.
+
+This update also includes a refactor of the plugin settings window. It should now be somewhat more compact and behave better on differently sized displays.
+
+- Added "Chime" option for audio notifications
+- Major refactor of plugin settings window
+- Fix an issue where numeric plugin settings could cause an error if they specified a minimum value above 0 (fredjk)
+- Added `DirectoryInfo` as a valid datatype for plugin settings
+- Corrected behaviour for internally focusing a plugin while popped out (fredjk)
+- Restore missing "Plugin Folder" button
+- Corrected handling of application audio to not mess with windows mixer
+- Update behaviour when installing plugin from double-click of .eop file to automatically restart Observatory
+- Expanded framework notifier interface to include necessary information for persisted notifications
+- (1.2.4) Fix an issue in Botanist where re-played journals without accompanying Status file data could cause errors
+- (1.2.4) Relax "on screen" requirement when restoring plugin popout locations to be in line with those of the main window
+
 ## v1.2.2 - Sizing It Up
 
 Release versions:
