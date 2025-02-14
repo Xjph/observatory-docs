@@ -7,6 +7,21 @@ description: Tool for reading/monitoring Elite Dangerous journals for interestin
 
 ## Latest 
 
+### v1.2.7 - Persistence Pays Off
+
+Release versions:
+  * [Installer](https://github.com/Xjph/ObservatoryCore/releases/download/v1.2.7/ObservatorySetup.exe)
+  * [Portable](https://github.com/Xjph/ObservatoryCore/releases/download/v1.2.7/ObservatoryPortable.zip)
+
+This release fixes an issue with persistent notifications, such as those used by Botanist to track current scan status, which prevented notification plugins from being able to properly handle them. This should be most interesting for anyone using MattG's Stellar Overlay.
+
+In addition there is now an option for alternative journal monitoring which actively polls the files to check for changes. This should only be enabled if you're having issues with the normal monitoring not responding to journal changes.
+
+- Pass generated GUID in initial NotificationArgs object for persistent notifications.
+- Add option for polled journal monitoring
+- Several under-the-hood fixes for settings and error handling (fredjk)
+
+
 ### v1.2.6 - Tab Order Bugfix
 
 Release versions:
