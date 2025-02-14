@@ -14,7 +14,7 @@ To get started creating criteria all you need to do is create a text file and se
 
 ## Simple Criteria
 
-Simple criteria can be written as single-line expressions. Criteria in this category are typically straightforward tests of a value against a condition, //e.g.// "is this body landable with a surface temperature above 1500 K"? Here is one way that particular check could be written:
+Simple criteria can be written as single-line expressions. Criteria in this category are typically straightforward tests of a value against a condition, _e.g._ "is this body landable with a surface temperature above 1500 K"? Here is one way that particular check could be written:
 
 ```lua
 ---@Simple Hot Landable
@@ -34,7 +34,7 @@ scan.Landable and scan.SurfaceTemperature > 1500
 'Temperature: ' .. math.floor(scan.SurfaceTemperature) .. ' K'
 ```
 
-A `---@Detail` annotation on the line //immediately following// a simple criteria expression indicates that the next line will be a string valued expression which is to be displayed in the "Detail" column.
+A `---@Detail` annotation on the line _immediately following_ a simple criteria expression indicates that the next line will be a string valued expression which is to be displayed in the "Detail" column.
 
 The string expression itself is a single-line Lua expression which must result in a single string. In this example we use Lua's *concatenation operator*, `..`, to build more presentable output than just tossing the temperature value there by itself. We also use `math.floor`, a function from [Lua's built-in `math` library](http://lua-users.org/wiki/MathLibraryTutorial), to remove unnecessary decimal places from the original journal values. If more control over how numbers are displayed is desired then `string.format` can be used instead. You can find a section detailing its use below.
 
