@@ -7,6 +7,18 @@ description: Tool for reading/monitoring Elite Dangerous journals for interestin
 
 ## Latest 
 
+### v1.2.8 - Persistent Fixing
+
+Release versions:
+  * [Installer](https://github.com/Xjph/ObservatoryCore/releases/download/v1.2.8/ObservatorySetup.exe)
+  * [Portable](https://github.com/Xjph/ObservatoryCore/releases/download/v1.2.8/ObservatoryPortable.zip)
+
+This release fixes an issue with persistent notifications, for real this time.
+
+- Fix issue where updated notifications could fail to pass Guid correctly when parameters inconsistently populated.
+- New `IObservatoryCore.UpdateNotification(NotificationArgs notificationEventArgs)` method which does not require redundant Guid parameter.
+- `IObservatoryCore.UpdateNotification(Guid id, NotificationArgs notificationEventArgs)` is now deprecated in favour of `IObservatoryCore.UpdateNotification(NotificationArgs notificationEventArgs)`. The removal of the obsolete method is not currently planned for any specific release, however plugin developers should move away from it when possible.
+
 ### v1.2.7 - Persistence Pays Off
 
 Release versions:
