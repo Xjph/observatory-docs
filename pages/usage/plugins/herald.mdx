@@ -1,0 +1,44 @@
+# Herald
+
+Herald is an optional [plugin](/usage/plugins) for Observatory which provides higher quality voice notifications using Azure Cognitive Services or an OpenAI voice model.
+
+*Note: This plugin requires either an active Patreon pledge or for the user to provide their own Azure Cognitive Services subscription or access to a speech service providing an OpenAI speech API endpoint.*
+
+## Installation
+
+  * Make sure you already have Observatory [downloaded](/release).
+  * Download the latest version of Herald from its [release page](/release/herald).
+  * Double-click on the downloaded .eop file to install it into Observatory.
+    * For a Portable installation, copy the .eop file into the `plugins` folder of your Observatory installation.
+
+## Usage
+
+import Image from 'next/image'
+
+Herald is a notifier plugin which will take over the handling of voice notifications from the core Observatory application. It does not have a tab in the main window and can be configured through its settings panel.
+
+![Herald's settings panel](/herald-settings.png)
+*Herald Settings*
+
+  * **API:** The API to use for voice notifications.
+    * **Observatory API:** Uses Azure Cognitive Services via Observatory's own API to generate voice notifications. Requires an active Patreon pledge.
+    * **Azure:** Uses Azure Cognitive Services to generate voice notifications. Requires an active subscription.
+    * **OpenAI:** Uses an OpenAI voice model to generate voice notifications. Requires access to a speech service providing an OpenAI speech API endpoint.
+  * **Voice:** The voice to use for voice notifications. This setting only affects Observatory API and Azure.
+  * **Rate:** The rate of speech for voice notifications. This setting only affects Observatory API and Azure.
+  * **Cache Size:** The size of the local voice cache for notifications. Cached voices prevent the need to re-request the same voice line multiple times to save both time and bandwidth.
+  * **Test:** Plays a test notification using the current settings. This is useful for testing your configuration and ensuring that everything is working correctly.
+  * **Observatory API Settings**
+    * **User ID:** An auto-generated user ID. This is used to identify your account and is required for the Observatory API to function. You can copy this from one installation of Observatory to another if you wish to avoid re-authenticating multiple times with Patreon.
+    * **Login With Patreon:** Opens a browser window to authenticate with your Patreon account.
+  * **Azure Cognitive Services Settings**
+    * **Subscription Key:** The subscription key for your Azure Cognitive Services account.
+    * **Azure Region:** The region of your Azure Cognitive Services account.
+  * **OpenAI Settings**
+    * **API Endpoint:** The URL for the OpenAI speech API endpoint.
+    * **API Key:** The API key for the OpenAI speech API endpoint.
+    * **Model:** The model to use for voice notifications.
+    * **Voice:** The voice to use for voice notifications.
+
+
+
