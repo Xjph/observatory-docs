@@ -7,6 +7,23 @@ description: Tool for reading/monitoring Elite Dangerous journals for interestin
 
 ## Latest 
 
+### v1.4.2 - Primarily Portable Tidying
+
+Release versions:
+  * [Installer](https://github.com/Xjph/ObservatoryCore/releases/download/v1.4.2/ObservatorySetup.exe)
+  * [Portable](https://github.com/Xjph/ObservatoryCore/releases/download/v1.4.0/ObservatoryPortable.zip)
+
+This bugfix release focuses on some undesired behaviour in the portable version with regard to plugin loading and data storage. This should prevent plugin data folders from erroneously being displayed as invalid plugins.
+
+In addition the bundled version of Explorer finally has the new codex entry criteria implemented. This setting previously did nothing.
+
+- Reorganise data folders for portable version.
+- Add automatic migration of existing portable data to new folder structure.
+- Disable processing of plugin subfolders as plugins for all non-debug builds.
+- Implement codex entry criteria in bundled Explorer plugin.
+- Fix issue where internal plugin messaging would lose the original message ID. [fredjk-gh](https://github.com/fredjk-gh)
+- General tidying and improvements to plugin UI handling. [fredjk-gh](https://github.com/fredjk-gh)
+
 ### v1.4.0 - Plug It In
 
 Release versions:
