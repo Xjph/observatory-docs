@@ -5,13 +5,28 @@ description: Tool for reading/monitoring Elite Dangerous journals for interestin
 
 # Observatory Core Downloads
 
-## Latest 
+## Latest
+
+### v1.4.3 - Data Migration Cleanup
+
+Release versions:
+  * [Installer](https://github.com/Xjph/ObservatoryCore/releases/download/v1.4.3/ObservatorySetup.exe)
+  * [Portable](https://github.com/Xjph/ObservatoryCore/releases/download/v1.4.3/ObservatoryPortable.zip)
+
+Very little that users will notice in this release, primarily bugfixes around how plugin data folders are handled and migrated.
+
+- Revert to bare GUID for data folder naming to avoid issues with plugin name changes or overlaps.
+- Improved robustness and error handling of data migration.
+- Fix issue where data folders were not created for newly installed plugins. [fredjk-gh](https://github.com/fredjk-gh)
+- Fix issue with decompressing .eop plugin manifests containing multibyte characters. [MattG](https://github.com/matt-g-dev)
+- Implement more missing journal serializers. [fredjk-gh](https://github.com/fredjk-gh)
+
 
 ### v1.4.2 - Primarily Portable Tidying
 
 Release versions:
   * [Installer](https://github.com/Xjph/ObservatoryCore/releases/download/v1.4.2/ObservatorySetup.exe)
-  * [Portable](https://github.com/Xjph/ObservatoryCore/releases/download/v1.4.0/ObservatoryPortable.zip)
+  * [Portable](https://github.com/Xjph/ObservatoryCore/releases/download/v1.4.2/ObservatoryPortable.zip)
 
 This bugfix release focuses on some undesired behaviour in the portable version with regard to plugin loading and data storage. This should prevent plugin data folders from erroneously being displayed as invalid plugins.
 
