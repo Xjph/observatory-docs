@@ -7,6 +7,30 @@ description: Tool for reading/monitoring Elite Dangerous journals for interestin
 
 ## Latest
 
+### v1.5.0 - Quiet Before The Storm
+
+Release versions:
+  * [Installer](https://github.com/Xjph/ObservatoryCore/releases/download/v1.5.0/ObservatorySetup.exe)
+  * [Portable](https://github.com/Xjph/ObservatoryCore/releases/download/v1.5.0/ObservatoryPortable.zip)
+
+This release marks the last planned minor version before v2.0 and native linux support. You may see various 1.5.x releases for bugfixing, but unless something very strange happens there will be no v1.6.
+
+Much of what's in this release is courtesy of [fredjk-gh](https://github.com/fredjk-gh), as my attention has been focused on getting Photographer ready. More on that very soon.
+
+Custom Criteria got a lot of love in this release. Everyone should buy [fredjk-gh](https://github.com/fredjk-gh) a beer.
+
+- A `notifyForBody` method is now available, allowing non-scan notifications to specify the body they are associated with.
+- `AllBodies` event now has `system` and `parentsTable` values available.
+- Restrictions lifted on having non-criteria blocks of the same type (`Global`, `AllBodies`, etc.) This will make it possible to join multiple criteria files without needing to refactor them into single blocks.
+- Improved error reporting when exceptions are encountered in custom critera.
+- Correctly reload criteria when changing to a new file.
+- Fix false matching of bodies with "Ring" or "Belt" in their names as rings or belts.
+
+And a non-criteria related fix for plugin authors:
+
+- Fix issue where grid items added multiple at a time via `AddGridItems` would _always_ be grouped.
+
+
 ### v1.4.3 - Data Migration Cleanup
 
 Release versions:

@@ -334,6 +334,8 @@ Handles the `FSSAllBodiesFound` journal event which indicates all system bodies 
 - `allBodies.SystemName` (string): Name of system.
 - `allBodies.SystemAddress` (ulong): 64-bit unsigned integer uniquely identifying the current system.
 - `allBodies.Count` (int): Number of bodies in system.
+- `system` (collection): See [Collections and Iterators](#collections-and-iterators).
+- `parentsTable` (collection): A table of parent bodies indexed by BodyId.
 
 ```lua
 -- Records number of bodies in current system to a table
@@ -403,6 +405,8 @@ The function signature is `notify(string title, string detail, string extendedDe
 `detail` is the body of the notification and in the "Description" column of the UI.
 
 `extendedDetail` is additional notification detail that does not typically appear in popup or voice notifications, but may be handled by other notifier plugins. It is displayed in the "Details" column of the UI.
+
+This was expanded on in Explorer 1.3 with a `notifyForBody` which works similarly to `notify` but allows the user to specify which body the notification is in regard to. The function signature is `notifyForBody(string title, string detail, string extendedDetail, int bodyId)`.
 
 ## Formatting Strings
 
