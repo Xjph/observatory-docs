@@ -6,9 +6,11 @@ It can also apply some simple post-processing, including resizing, addition text
 
 Additionally Photographer can embed the Elite Dangerous metadata into the EXIF data of the screenshot, allowing for other tools to read and make use of it, or simply to retain the information for later reference by the user.
 
-> **Note:** This plugin is currently available to paid [patreon members only](https://www.patreon.com/c/vithigar) for a limited period. It will be made freely available to all users at a later date, at which point it will be bundled with the regular release of Observatory.
+> **Note:** New feature releases of Photographer are made available to [patreon members](https://www.patreon.com/c/vithigar) first before later general release to all.
 
 ## Installation
+
+**[Download version 1.1.0 here.](https://xjph.net/Observatory/Photographer/1.1.0/ObservatoryPhotographer.eop)**
 
   * Installed: Double-clicking the .eop file should automatically install the plugin. If this does not work, you can manually use the "portable" installation method.
   * Portable: Add ObservatoryPhotographer.eop to the plugins folder located in the same location as Observatory's executable.
@@ -45,7 +47,8 @@ import Image from 'next/image'
 The process window allows you to configure the processing settings to be applied to screenshots.
 
   * **Format:** The file format to save the final image in. Available options are PNG, JPEG, WEBP, HEIC, and BMP. Note that not all formats support all features, notably metadata embedding may not work for formats other than PNG and JPEG.  
-  JPEG, WEBP, and HEIC formats additionally allow you to specify the quality level to use. PNG and BMP are lossless formats and do not have a quality setting.
+  JPEG, WEBP, and HEIC formats additionally allow you to specify the quality level to use. PNG, JPEG-XL\*, and BMP are lossless formats and do not have a quality setting.  
+  <sup>*JPEG-XL does support lossy compression but this is not implemented by Photographer.</sup>
   * **Resize:** When enabled will resize the image to the specified dimensions. You can choose to resize to a specific width and height, or scale to a percentage of the original size.
   * **Caption:** When enabled will add the specified text to the image. You can specify the font, size, color, and position of the text. Placeholders for metadata values are available.
   * **Watermark:** When enabled will overlay a supplied image at the selected position.
