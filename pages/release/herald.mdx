@@ -7,7 +7,16 @@ description: Plugin for improved voice notifications.
 
 **IMPORTANT: Using the Herald plugin requires a Patreon pledge, an Azure Cognitive Services account, or access to an OpenAI voice API.**
 
-## Latest 
+## Latest
+
+### v2.1.2
+
+This release addresses an issue where Herald could throw an error if a plugin sent SSML content to speak with no actual spoken words in its `<voice>` element.
+
+Additionally Herald now keeps a local cache of available Azure voices, so it will no longer fail to load if the Observatory API it uses is not available.
+
+Release versions:
+  * [EOP](https://github.com/Xjph/ObservatoryHerald/releases/download/v2.1.2/ObservatoryHerald.eop)
 
 ### v2.1.0
 
