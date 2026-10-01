@@ -177,6 +177,16 @@ All criteria have access to five objects which are passed in from Explorer to th
 
 <sup>* Only available in scans on or after 2021-09-22.</sup>
 
+### Constants
+
+Several constants are also available for convenience in the `const` table.
+
+  * `const.SPEED_OF_LIGHT_mps` - Speed of light in metres per second
+  * `const.GRAVITY_mps2` - Earth gravity (1g) in m/s²
+  * `const.ATM_PRESSURE_Pa` - Earth sea level atmospheric pressure in Pascals
+  * `const.DAY_s` - Seconds in one day
+  * `const.HOUR_s` - Seconds in one hour
+
 ## Collections and Iterators
 
 There are several collections available when creating criteria, as well as specific Lua iterators to assist working with them. The `scan` object itself contains `Materials`, `AtmosphereComposition`, and `Rings` collections. In addition `parents` and `system` collections are available as independent objects.
