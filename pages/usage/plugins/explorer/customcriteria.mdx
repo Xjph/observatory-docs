@@ -240,7 +240,7 @@ end
 
 ## Global Block
 
-Another annotation which can be used in a criteria file is `---@Global`. Like the `---@Criteria` annotation it is paired with `---@End` to create a code block.
+Another annotation which can be used in a criteria file is `---@Global`. Like the `---@Complex` annotation it is paired with `---@End` to create a code block.
 
 Any Lua script contained within a `---@Global` block is executed in advance of all processing and exists within the same global state as all subsequent criteria execution. This allows you to set global variables or define your own custom functions that can be used in your criteria. While not strictly necessary it is recommended that only a single `---@Global` block be used. For details on why, see the Under The Hood section.
 
@@ -264,8 +264,8 @@ function systemHasWaterWorld(system)
   end
 end
 
-ammoniaEarthlikePair = `
-ammoniaWaterPair = `
+ammoniaEarthlikePair = ''
+ammoniaWaterPair = ''
 ---@End
 
 ---@Complex
@@ -338,9 +338,11 @@ Handles the `FSSAllBodiesFound` journal event which indicates all system bodies 
 - `parentsTable` (collection): A table of parent bodies indexed by BodyId.
 
 ```lua
--- Records number of bodies in current system to a table
+-- Records number of bodies in current system to a
+-- table named 'fullyScanned', defined elsewhere.
+
 ---@AllBodies
-  fullyScanned.insert(allBodies.SystemName, allBodies.Count)
+  table.insert(fullyScanned, { allBodies.SystemName, allBodies.Count })
 ---@End
 ```
 
@@ -394,6 +396,10 @@ Handles the `FSSDiscoveryScan` event which occurs after performing the initial F
 ---@End
 ```
 
+## Convenience functions
+
+A number of functions are available as general convenience tools for anyone making custom criteria. While they do not expose any additional information that isn't already derivable from what's available
+
 ## Notifications
 
 Explorer 1.1 also adds a new function for sending arbitraray notifications from custom criteria. These are both added to the Explorer results table and sent out to notifier plugins.
@@ -416,7 +422,7 @@ You can use `string.format` for greater control over the display of numbers than
 
 A simple example: 
 ```lua
-string.format('Temperature: %f K, Pressure: %fPa', scan.SurfaceTemperature, scan.SurfacePressure)
+string.format('Temperature: %f K, Pressure: %f Pa', scan.SurfaceTemperature, scan.SurfacePressure)
 ```
 
 This results in a string similar to "Temperature: 42.87649 K, Pressure: 15.32398Pa". Generally you won't need that level of precision in your output, so you can further refine that with something like: 
@@ -425,14 +431,14 @@ This results in a string similar to "Temperature: 42.87649 K, Pressure: 15.32398
 string.format('Temperature: %.1f K, Pressure: %.1fPa', scan.SurfaceTemperature, scan.SurfacePressure)
 ```
 
-Which limits the output to a single decimal place, resulting in "Temperature: 42.9 K, Pressure: 15.3Pa" for the same input. Notice that the output is *rounded*, rather than being truncated.
+Which limits the output to a single decimal place, resulting in "Temperature: 42.9 K, Pressure: 15.3 Pa" for the same input. Notice that the output is *rounded*, rather than being truncated.
 
 Placeholder tokens start with `%`, followed by an optional format specification (`.1` in the above example), and are terminated by a character indicating the type of value to expect (in this case `f` for `float`).
 
 The complete set of tokens available is beyond the scope of this documentation, but those most useful within custom criteria are:
 
   * `%f` - float
-  * `%i` - integer
+  * `%d` or `%i` - integer
   * `%e` - exponential float
   * `%s` - string
   * `%%` - inserts a "%" symbol (a single `%` is interpreted as the start of a token)
@@ -441,7 +447,7 @@ The options to format the output can specify padding, sign inclusion, and decima
 
 Specifying the number of decimal places works as one might expect, with the number being rounded to the places specified, as in the above example.
 
-Padding amount is the minimum number of characters long the output will be. For example an integer padded with `%5i` will insert with three leading spaces to make a total of five characters, *e.g.* "&nbsp;&nbsp;&nbsp;26". Padding *will not truncate*, and numbers that exceed the padding amount will still be retained. Prefixing the padding amount with a `0` will pad with zeroes instead of spaces (e.g., `%05i` resulting in "00026"), while a negative number can be specified for padding to left-justify the number, if desired (e.g., `%-5i` resulting in "26&nbsp;&nbsp;&nbsp;").
+Padding amount is the minimum number of characters long the output will be. For example an integer padded with `%5i` will insert with three leading spaces to make a total of five characters, *e.g.* "&nbsp;&nbsp;&nbsp;26". Padding *will not truncate*, and numbers that exceed the padding amount will still be retained. Prefixing the padding amount with a `0` will pad with zeroes instead of spaces (e.g., `%05i` resulting in "00026"), while a minus sign can be specified for padding to left-justify the number, if desired (e.g., `%-5i` resulting in "26&nbsp;&nbsp;&nbsp;").
 
 A `+` can be prefixed to explicity include the positive sign in your output. For example, `string.format('Ascending node: %+f°', scan.AscendingNode)` to output "Ascending node: +27.15675°".
 
