@@ -199,7 +199,7 @@ The `scan.Rings` collection is a list of `Ring` objects, each of which has the f
   * `scan.Rings[n].InnerRad` (float): Orbital radius of inner edge of ring in metres.
   * `scan.Rings[n].OuterRad` (float): Orbital radius of outer edge of ring in metres.
 
-As with materials, there is a `rings` iterator to assist working with this collection:
+Similar to materials, there are `rings`, `ringsOnly`, and `beltsOnly` iterators to assist working with this collection:
 ```lua
 for ring in rings(scan.Rings) do
   --Available in loop body:
@@ -398,7 +398,145 @@ Handles the `FSSDiscoveryScan` event which occurs after performing the initial F
 
 ## Convenience functions
 
-A number of functions are available as general convenience tools for anyone making custom criteria. While they do not expose any additional information that isn't already derivable from what's available
+A number of functions are available as general convenience tools for anyone making custom criteria. While they do not expose any additional information that isn't already derivable from what's available they can make the implementation of some criteria much simpler.
+
+### hasBelts
+
+Accepts a ring collection as its argument and returns a boolean indicating whether that set of rings contains asteroid belts.
+
+```
+if (hasBelts(scan.Rings))
+  -- Do something specific to asteroid belts here
+end
+```
+
+### isBelt
+
+Accepts the name of a system body as its argument and returns a boolean indicating whether that body is an asteroid belt.
+
+```
+if (isBelt(scan.BodyName))
+  -- Do something specific to an individual belt here
+end
+```
+
+### hasRings
+
+Accepts a ring collection as its argument and returns a boolean indicating whether that set of rings contains planetary rings.
+
+```
+if (hasRings(scan.Rings))
+  -- Do something specific to planetary rings here
+end
+```
+
+### isRing
+
+Accepts the name of a system body as its argument and returns a boolean indicating whether that body is a planetary ring.
+
+```
+if (isRing(scan.BodyName))
+  -- Do something specific to a planetary ring here
+end
+```
+
+### isStar
+
+Accepts a scan object as its argument and returns a boolean indicating whether that body is a star.
+
+```
+if (isStar(scan))
+  -- Do something specific to a star here
+end
+```
+
+### isPlanet
+
+Accepts a scan object as its argument and returns a boolean indicating whether that body is a planet or moon.
+
+```
+if (isPlanet(scan))
+  -- Do something specific to a planet here
+end
+```
+
+### isBarycentre
+
+Accepts a scan object as its argument and returns a boolean indicating whether that scan is for a barycentre.
+
+```
+if (isBarycentre(scan))
+  -- Do something specific to a barycentre
+end
+```
+
+### hasAtmosphere
+
+Accepts a scan object as its argument and returns a boolean indicating whether that body has an atmosphere.
+
+```
+if (hasAtmosphere(scan))
+  -- Do something specific to having an atmosphere here
+end
+```
+
+### hasLandableAtmosphere
+
+Accepts a scan object as its argument and returns a boolean indicating whether that body is landable and has an atmosphere.
+
+```
+if (hasLandableAtmosphere(scan))
+  -- Do something specific to being landable and having an atmosphere here
+end
+```
+
+### distanceAsLs
+
+Accepts a number as an argument and converts that number from metres to light-seconds.
+
+```
+distLs = distanceAsLs(scan.SemiMajorAxis)
+```
+
+### distanceAsKm
+
+Accepts a number as an argument and converts that number from metres to kilometres.
+
+```
+distKm = distanceAsKm(scan.Radius)
+```
+
+### gravityAsG
+
+Accepts a number as an argument and converts that number from m/s² to multiples of earth gravity (g).
+
+```
+gees = gravityAsG(scan.SurfaceGravity)
+```
+
+### pressureAsAtm
+
+Accepts a number as an argument and converts that number from Pascals to atmospheres.
+
+```
+atm = pressureAsAtm(scan.SurfacePressure)
+```
+
+### periodAsDay
+
+Accepts a number as an argument and converts that number from seconds to days.
+
+```
+orbit = periodAsDay(scan.OrbitalPeriod)
+```
+
+### periodAsHour
+
+Accepts a number as an argument and converts that number from seconds to hours.
+
+```
+rot = periodAsHour(scan.RotationPeriod)
+```
 
 ## Notifications
 
